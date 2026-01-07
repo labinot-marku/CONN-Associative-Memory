@@ -33,8 +33,8 @@ CONN augments classical Hopfield networks with oscillatory dynamics and topologi
 
 ### Main Publication (January 2026)
 
-**📑 Manuscript:** [CONN_Main_Manuscript_Published_Jan2026.pdf](CONN_Main_Manuscript_Published_Jan2026.pdf)  
-**📊 Supplementary Materials:** [CONN_Supplementary_Published_Jan2026.pdf](CONN_Supplementary_Published_Jan2026.pdf)
+**📑 Main Manuscript:** [CONN_Published_Jan2026.pdf](CONN_Published_Jan2026.pdf)  
+**📊 Supplementary Materials:** [CONN_Supplementary_Materials_Dec2025.pdf](CONN_Supplementary_Materials_Dec2025.pdf)
 
 **🔗 DOI:** [10.13140/RG.2.2.21347.00801](https://doi.org/10.13140/RG.2.2.21347.00801)  
 **🌐 ResearchGate:** [View Publication](https://www.researchgate.net/profile/Labinot-Marku)  
@@ -174,7 +174,7 @@ These manuscripts provide the mathematical foundation for understanding CONN's p
 - ✅ Manuscript published on ResearchGate with DOI
 - ✅ Supplementary materials available
 - ✅ Repository structure defined
-- ✅ README documentation
+- ✅ Complete documentation
 
 ### 🚧 In Progress
 
@@ -194,39 +194,37 @@ These manuscripts provide the mathematical foundation for understanding CONN's p
 
 ---
 
-## 📁 Planned Repository Structure
+## 📁 Repository Structure
 
 ```
 CONN-Associative-Memory/
-├── README.md                             # This file
-├── requirements.txt                      # Python dependencies (coming soon)
-├── LICENSE                               # MIT License
+├── README.md                                      # This file
+├── CONN_Published_Jan2026.pdf                     # Published manuscript
+├── CONN_Supplementary_Materials_Dec2025.pdf       # Supplementary materials
+├── LICENSE                                        # MIT License (coming)
 │
-├── CONN_Main_Manuscript_Published_Jan2026.pdf       # Published manuscript
-├── CONN_Supplementary_Published_Jan2026.pdf         # Supplementary materials
+├── src/                                           # Source code (coming)
+│   ├── conn_core.py                              # Core CONN implementation
+│   ├── conn_final_validation.tsx                 # Interactive validation suite
+│   ├── hyperparameter_search.tsx                 # Parameter optimization
+│   └── hopfield_baseline.py                      # Hopfield comparison
 │
-├── src/
-│   ├── conn_core.py                     # Core CONN implementation
-│   ├── conn_final_validation.tsx        # Interactive validation suite
-│   ├── hyperparameter_search.tsx        # Parameter optimization
-│   └── hopfield_baseline.py             # Hopfield comparison
+├── experiments/                                   # Experiment scripts (coming)
+│   ├── run_full_validation.py                    # Main validation
+│   ├── run_hyperparameter_search.py              # Optimization
+│   ├── run_ablation.py                           # Ablation study
+│   └── run_noise_robustness.py                   # Noise analysis
 │
-├── experiments/
-│   ├── run_full_validation.py           # Main validation
-│   ├── run_hyperparameter_search.py     # Optimization
-│   ├── run_ablation.py                  # Ablation study
-│   └── run_noise_robustness.py          # Noise analysis
+├── data/                                          # Data files (coming)
+│   ├── raw/                                      # Raw trial data (CSV)
+│   └── processed/                                # Summary statistics
 │
-├── data/
-│   ├── raw/                              # Raw trial data (CSV)
-│   └── processed/                        # Summary statistics
+├── figures/                                       # Figures (coming)
 │
-├── figures/                              # All figures (PDF)
-│
-└── analysis/
-    ├── statistical_analysis.ipynb       # Jupyter notebook
-    ├── generate_figures.py              # Reproduce figures
-    └── verify_reproducibility.py        # Verification
+└── analysis/                                      # Analysis scripts (coming)
+    ├── statistical_analysis.ipynb                # Jupyter notebook
+    ├── generate_figures.py                       # Reproduce figures
+    └── verify_reproducibility.py                 # Verification
 ```
 
 ---
@@ -329,7 +327,7 @@ Haltenhoffstr. 41
 
 - **Manuscript:** [ResearchGate Publication](https://www.researchgate.net/profile/Labinot-Marku)
 - **DOI:** [10.13140/RG.2.2.21347.00801](https://doi.org/10.13140/RG.2.2.21347.00801)
-- **Supplementary Materials:** [View on ResearchGate](https://www.researchgate.net/profile/Labinot-Marku)
+- **Supplementary Materials:** [Available in this repository](CONN_Supplementary_Materials_Dec2025.pdf)
 - **Interactive Demo:** Coming soon
 
 ---
@@ -342,10 +340,12 @@ Haltenhoffstr. 41
 
 ## 📊 Publication Metrics
 
-**Current Stats (as of upload):**
+**Current Stats:**
+- **DOI:** 10.13140/RG.2.2.21347.00801
+- **Published:** January 2026 on ResearchGate
 - **Reads:** Track on [ResearchGate](https://www.researchgate.net/profile/Labinot-Marku)
 - **Citations:** Will appear on Google Scholar (indexed within 3-7 days)
-- **DOI:** 10.13140/RG.2.2.21347.00801
+- **Status:** Preprint (not peer-reviewed)
 
 ---
 
@@ -353,9 +353,8 @@ Haltenhoffstr. 41
 
 **Last updated:** January 7, 2026  
 **Version:** 1.0.0 (Published)  
-**Status:** Manuscript published on ResearchGate (DOI assigned)  
-**Preprint:** Not peer-reviewed  
-**Code:** In development
+**Manuscript:** Published on ResearchGate with DOI assigned  
+**Code:** In development  
 
 ---
 

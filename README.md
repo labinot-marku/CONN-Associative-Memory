@@ -1,33 +1,84 @@
-# CONN Validation Suite - Correct Implementation
+# CONN Validation Suite – Research Implementation
 
 **Coherence Oscillatory Neural Networks (CONN)**
 
-[![DOI](https://img.shields.io/badge/DOI-10.13140%2FRG.2.2.25288.99841-blue)](https://doi.org/10.13140/RG.2.2.25288.99841)
-
----
-
-## ⚠️ CRITICAL IMPLEMENTATION NOTE
-
-**This repository contains the CORRECTED implementation.**
-
-During development, a sign error was discovered in the coherence gradient term:
-
-- **WRONG (original bug):** `coherence = +2λ sin(φ)cos(φ)` ← Gradient **ascent** (diverges)
-- **CORRECT (fixed):**  `coherence = -2λ sin(φ)cos(φ)` ← Gradient **descent** (converges)
-
-All results in the manuscript use the corrected version. This is a standard debugging process in scientific software development.
+[![DOI](https://img.shields.io/badge/DOI-10.13140%2FRG.2.2.21347.00801-blue)](https://doi.org/10.13140/RG.2.2.21347.00801)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 
 ---
 
 ## 📄 Manuscript Reference
 
-**"Topological Phase Constraints and Amplitude Dynamics Improve Associative Memory in Oscillatory Neural Networks"**
+**Title:** Topological Phase Constraints and Amplitude Dynamics Improve Associative Memory in Oscillatory Neural Networks
 
-- **Author:** Labinot Marku, M.D.
-- **Institution:** KRH Klinikum Nordstadt Hannover, Germany
-- **Date:** January 11, 2026
-- **DOI:** [10.13140/RG.2.2.25288.99841](https://doi.org/10.13140/RG.2.2.25288.99841)
-- **AI Collaboration:** Claude (Anthropic), ChatGPT (OpenAI)
+**Author:** Labinot Marku, M.D.  
+**Institution:** KRH Klinikum Nordstadt Hannover, Germany  
+**Date:** December 21, 2025  
+**DOI:** [10.13140/RG.2.2.21347.00801](https://doi.org/10.13140/RG.2.2.21347.00801)  
+**AI Collaboration:** Claude (Anthropic), ChatGPT (OpenAI)
+
+---
+
+## ⚠️ Important: Hyperparameter Configuration
+
+This repository contains a **valid exploratory implementation** of CONN dynamics at **λ=4.0** (coherence strength).
+
+The **published paper** subsequently found **λ=1.0 to be optimal** through systematic grid search validation (36 configurations tested).
+
+### Current Repository Configuration (λ=4.0)
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| **λ** (lambda_coh) | **4.0** | Coherence strength (suboptimal) |
+| β (beta) | 0.5 | Amplitude regularization |
+| η_φ (eta_phi) | 0.005 | Phase learning rate |
+| η_A (eta_A) | 0.03 | Amplitude learning rate |
+| Steps | 150 | Integration timesteps |
+
+**Expected results with λ=4.0:**
+- Capacity: α ≈ 0.25 at N=32 (8 patterns for 32 neurons, suboptimal)
+- Ablation: Minimal separation between conditions
+
+### Paper-Validated Optimal Configuration (λ=1.0)
+
+**From paper Table S1 (page 3), Hyperparameter Optimization (page 5-6):**
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| **λ** (lambda_coh) | **1.0** | Coherence strength (OPTIMAL) |
+| β (beta) | 0.5 | Amplitude regularization |
+| η_φ (eta_phi) | 0.005 | Phase learning rate |
+| η_A (eta_A) | 0.03 | Amplitude learning rate |
+| Steps | 150 | Integration timesteps |
+
+**Expected results with λ=1.0:**
+- Capacity: α ≈ 0.375 at N=32 (**+50% vs λ=4.0**, 12 patterns for 32 neurons)
+- Ablation shows clear separation:
+  - Full CONN: 85.3%
+  - No λ: 72.1% (-13.2 pp)
+  - No amplitude: 80.9% (-4.4 pp)
+  - Baseline: 68.5%
+
+### 🔧 How to Use Optimal Parameters
+
+**To reproduce published paper results, modify line 61 in the code:**
+
+```python
+# In Config class:
+LAMBDA = 1.0   # Change from 4.0 to 1.0 (OPTIMAL from paper)
+BETA = 0.5     # Keep as-is
+```
+
+**Performance comparison:**
+
+| λ value | N=32 Capacity | Status | Reference |
+|---------|---------------|--------|-----------|
+| 1.0 | α=0.375 (M=12) | ✅ **Optimal** | Paper Table S1 |
+| 2.0 | α=0.344 (M=11) | ⚠️ Acceptable | Paper Table S1 |
+| 4.0 | α=0.250 (M=8) | ❌ **Suboptimal (-33%)** | Current repo |
+
+**From paper (page 6):** *"λ=1.0 emerged as optimal, yielding 50% higher capacity at N=32 compared to λ=4.0"*
 
 ---
 
@@ -36,197 +87,106 @@ All results in the manuscript use the corrected version. This is a standard debu
 ### Installation
 
 ```bash
-# Clone repository
 git clone https://github.com/labinot-marku/CONN-Associative-Memory.git
 cd CONN-Associative-Memory
-
-# Install dependencies
-pip install numpy matplotlib scipy
+pip install -r requirements.txt
 ```
 
 ### Run Validation
 
+**Main implementation:** [`CONN_VALIDATION_V4_FINAL.py`](CONN_VALIDATION_V4_FINAL.py)
+
 ```bash
-# Full validation suite (reproduces all manuscript results)
+# Full validation suite (uses current λ=4.0)
 python CONN_VALIDATION_V4_FINAL.py
 
 # Quick test (N=32 only)
 python CONN_VALIDATION_V4_FINAL.py --quick
 
-# Single experiment
+# Single experiments
 python CONN_VALIDATION_V4_FINAL.py --experiment capacity
 python CONN_VALIDATION_V4_FINAL.py --experiment noise
 python CONN_VALIDATION_V4_FINAL.py --experiment ablation
 ```
 
+**Note:** To get paper-validated results, first change λ to 1.0 (see above).
+
 ---
 
 ## 📊 Expected Results
 
-### ⚠️ CRITICAL: Exploratory vs Validated Results
+### With Published Paper Parameters (λ=1.0) ✅
 
-**This code provides EXPLORATORY validation of the CONN mechanism.**
+**Validated claims from manuscript:**
 
-Results at small N (e.g., N=32) in quick mode are **upper bounds** and should 
-**NOT** be interpreted as rigorous capacity measurements.
+1. **Capacity Improvement:** ~1.38× average over Hopfield baseline
+   - **Note:** Capacity α = M/N (patterns per neuron)
+   - N=32: α=0.375 (M=12) vs Hopfield α=0.344 (M=11) → 1.09×
+   - N=64: α=0.359 (M=23) vs Hopfield α=0.266 (M=17) → 1.35×
+   - N=128: α=0.383 (M=49) vs Hopfield α=0.227 (M=29) → 1.69×
 
----
+2. **Noise Robustness:** ≥80% recall up to 30% phase-flip noise
 
-### Published Claims (Validated - Use These) ✅
+3. **Ablation Study (N=32, M=8):**
+   - Full CONN: **85.3%**
+   - No λ (λ=0): **72.1%** (-13.2 pp)
+   - No amplitude: **80.9%** (-4.4 pp)
+   - Baseline (Hopfield): **68.5%**
 
-**From manuscript (DOI: 10.13140/RG.2.2.25288.99841):**
+**Status:** ✅ Validated across 30 trials per configuration – use these numbers for citations
 
-- **Capacity improvement: ~1.38×** (conservative estimate)
-- Based on: Rigorous testing across multiple network sizes
-- Status: ✅ **Validated - use for citations and claims**
+### With Current Repository Parameters (λ=4.0) ⚠️
 
----
+**Expected results:**
+- Capacity: α ≈ 0.25 at N=32 (33% lower than optimal)
+- Ablation: Minimal separation (coherence over-constrains dynamics)
 
-### Repository Quick-Mode Results (Exploratory) ⚠️
+**Status:** ⚠️ Valid exploratory implementation, but suboptimal for performance claims
 
-**When running this code at N=32 in quick mode:**
-
-- May show: **2-4× improvement**
-- Status: ⚠️ **Exploratory upper bounds - NOT validated**
-- Artifacts from:
-  - Small network size (N=32 is non-asymptotic)
-  - Quick-mode optimistic binary search
-  - Limited trial counts
-  - Theoretical Hopfield baseline (not experimentally matched)
-
-**Do NOT use these numbers for performance claims.**
-
----
-
-### Why the Difference?
-
-The ablation study reveals the truth:
-
-```
-Full CONN:     89.6%
-No λ:          89.6%
-No Amplitude:  89.6%
-Baseline:      89.6%
-```
-
-**All identical at M=8, N=32** → Task is too easy → No stress test → 
-Any large capacity gain is an artifact, not a validated improvement.
-
-**Key Point:** When all methods perform equally well, apparent capacity 
-improvements are measurement artifacts, not real performance gains.
-
----
-
-### The Scientific Truth
-
-- **Paper's 1.38×** = Conservative, rigorous, validated ✅
-- **Code's 4× at N=32** = Exploratory artifact, not validated ⚠️
-
-**For any claims, use the published validated estimate (1.38×).**
-
----
-
-### Experiment-Specific Expected Results
-
-#### Experiment 1: Capacity Improvement
-- **Published (validated):** ~1.38× improvement ✅
-- **Repository (exploratory):** May show 2-4× at N=32 (artifact)
-- **Use for claims:** Published value only
-
-#### Experiment 2: Noise Robustness ✅
-- Graceful degradation with increasing noise (validated)
-- >80% recall at 30% noise for M=8
-- This result is robust and validated
-
-#### Experiment 3: Ablation Study
-- At easy regime (M=8, N=32): Minimal separation (expected)
-- Near capacity (M≈14-16): Component benefits emerge
-- This demonstrates regime-dependent behavior
-
----
-
-## 📋 Usage Guidelines
-
-### ✅ DO Use This Code For:
-- Exploring CONN mechanism
-- Educational demonstrations
-- Implementation verification
-- Understanding gradient descent dynamics
-
-### ❌ DO NOT Use This Code For:
-- Claiming capacity improvements >1.5×
-- Performance benchmarks
-- Ignoring published conservative estimates
-- Making numerical claims without validation
-
-**For any performance claims, cite the published manuscript.**
+**Key Point:** Always use the published validated estimates (1.38×) for scientific claims. To reproduce them, switch to λ=1.0.
 
 ---
 
 ## 🔬 Implementation Details
 
-### Core CONN Dynamics (CORRECTED)
+### CONN Dynamics
 
-**Phase Update:**
+The implementation uses **gradient descent** on the energy function:
+
+```
+E(φ, A) = -½ Σᵢⱼ Jᵢⱼ Aᵢ Aⱼ cos(φᵢ - φⱼ) + λ Σⱼ Aⱼ² sin²(φⱼ)
+          └──────────┬──────────┘   └────────┬──────────┘
+           Hebbian coupling      Topological prior
+```
+
+### Phase Update
 
 ```python
 # Coupling term: Σᵢ Jⱼᵢ Aᵢ sin(φᵢ - φⱼ)
-phi_diff = phi[:, np.newaxis] - phi[np.newaxis, :]  # (N, N) pairwise differences
+phi_diff = phi[:, np.newaxis] - phi[np.newaxis, :]
 coupling_matrix = J * A[np.newaxis, :] * np.sin(phi_diff)
 coupling = np.sum(coupling_matrix, axis=1)
 
-# *** CRITICAL FIX ***
-# Coherence term: -2λ A² sin(φ)cos(φ)  [NEGATIVE for gradient descent]
+# Coherence term: -2λ A² sin(φ)cos(φ)
+# Negative sign implements gradient descent (essential for convergence)
 coherence = -2 * lambda_coh * A**2 * np.sin(phi) * np.cos(phi)
 
-# Phase dynamics
+# Phase dynamics: dφ/dt = Aⱼ * coupling + coherence
 dphi = A * coupling + coherence
 phi = phi + eta_phi * dphi
 phi = np.mod(phi, 2 * np.pi)
 ```
 
-**Amplitude Update:**
+### Amplitude Update
 
 ```python
-# dA/dt = -2λ A sin²(φ)
-dA = -2 * lambda_coh * A * np.sin(phi)**2
+# Amplitude dynamics: dA/dt = -2λ A sin²(φ) - 2β(A - 1)
+dA = -2 * lambda_coh * A * np.sin(phi)**2 - 2 * beta * (A - 1)
 A = A + eta_A * dA
-A = np.clip(A, 0.01, 2.0)
+A = np.clip(A, 0.01, 2.0)  # Numerical stability
 ```
 
-### Parameters
-
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| `lambda_coh` | 4.0 | Coherence strength |
-| `eta_phi` | 0.005 | Phase learning rate |
-| `eta_A` | 0.03 | Amplitude learning rate |
-| `max_steps` | 150 | Integration steps |
-
----
-
-## 🔬 Mathematical Foundation
-
-### Energy Function
-
-```
-E(φ, A) = -½ Σᵢⱼ Jᵢⱼ Aᵢ Aⱼ cos(φᵢ - φⱼ) + λ Σⱼ Aⱼ² sin²(φⱼ)
-          └─────────────┬──────────────┘   └────────┬──────────┘
-                   Hebbian coupling         Topological prior
-```
-
-### Gradient Descent (CORRECT)
-
-```
-∂E/∂φⱼ = ½ Σᵢ Jᵢⱼ Aᵢ Aⱼ sin(φᵢ - φⱼ) + 2λ Aⱼ² sin(φⱼ)cos(φⱼ)
-
-dφⱼ/dt = -∂E/∂φⱼ = -½ Σᵢ Jᵢⱼ Aᵢ Aⱼ sin(φᵢ - φⱼ) - 2λ Aⱼ² sin(φⱼ)cos(φⱼ)
-         └─────────────────┬────────────────────┘   └────────────┬────────────┘
-                      Coupling term                    Coherence term
-                     (attracts to neighbors)         (attracts to {0,π})
-```
-
-**Both terms MUST be negative for gradient descent!**
+**Mathematical correctness:** Both coupling and coherence terms use **negative** signs to implement gradient descent on the energy function. This is essential for convergence to {0, π} phase attractors.
 
 ---
 
@@ -234,56 +194,21 @@ dφⱼ/dt = -∂E/∂φⱼ = -½ Σᵢ Jᵢⱼ Aᵢ Aⱼ sin(φᵢ - φⱼ) - 2�
 
 ```
 CONN-Associative-Memory/
-├── CONN_VALIDATION_V4_FINAL.py   # Main implementation (CORRECTED)
+├── CONN_VALIDATION_V4_FINAL.py   # Main implementation
 ├── README.md                     # This file
 ├── LICENSE                       # MIT License
 ├── requirements.txt              # Python dependencies
-│
-├── results/                      # Output from validation
+├── results/                      # Output CSVs
 │   ├── capacity_results.csv
 │   ├── noise_robustness.csv
 │   └── ablation_results.csv
-│
 ├── docs/                         # Documentation
-│   ├── implementation_notes.md   # Detailed implementation guide
-│   ├── bug_fix_history.md        # Sign error discovery and fix
-│   └── reproduction_guide.md     # Step-by-step reproduction
-│
-└── papers/                       # Manuscript and supplementary
+│   ├── implementation_notes.md
+│   └── reproduction_guide.md
+└── papers/                       # Manuscript PDFs
     ├── CONN_main_paper.pdf
-    ├── CONN_supplementary.pdf
-    └── code_availability.txt     # Citation instructions
+    └── CONN_supplementary.pdf
 ```
-
----
-
-## 🐛 Bug Fix History
-
-### Sign Error in Coherence Gradient (Fixed)
-
-**Discovery:** During validation testing, January 2026
-
-**Problem:** Original implementation used **positive** sign for coherence term:
-```python
-coherence = +2 * lambda_coh * A**2 * np.sin(phi) * np.cos(phi)
-```
-
-This implements **gradient ascent** instead of **gradient descent**, causing:
-- Divergence from {0, π} attractors
-- Poor recall performance
-- Instability with higher learning rates
-
-**Fix:** Changed to **negative** sign (correct gradient descent):
-```python
-coherence = -2 * lambda_coh * A**2 * np.sin(phi) * np.cos(phi)
-```
-
-**Impact:**
-- ✅ Proper convergence to {0, π} attractors
-- ✅ Stable dynamics
-- ✅ Achieves reported capacity improvements
-
-**All manuscript results use the corrected version.**
 
 ---
 
@@ -291,53 +216,24 @@ coherence = -2 * lambda_coh * A**2 * np.sin(phi) * np.cos(phi)
 
 ### System Requirements
 
-- Python 3.8+
-- NumPy 1.20+
-- Matplotlib 3.3+
-- SciPy 1.6+ (for statistical tests)
+- Python ≥ 3.8
+- NumPy ≥ 1.20
+- Matplotlib ≥ 3.3
+- SciPy ≥ 1.6
 
-### Reproduction Steps
+### Reproducing Paper Results
 
-1. **Clone and install:**
-   ```bash
-   git clone https://github.com/labinot-marku/CONN-Associative-Memory.git
-   cd CONN-Associative-Memory
-   pip install -r requirements.txt
-   ```
+1. **Modify hyperparameters** to optimal values (λ=1.0)
+2. **Run full validation:** `python CONN_VALIDATION_V4_FINAL.py`
+3. **Compare outputs** with published manuscript CSVs
+4. **Expected runtime:** ~15-30 minutes for full validation
 
-2. **Run full validation:**
-   ```bash
-   python CONN_VALIDATION_V4_FINAL.py
-   ```
+### Important Notes
 
-3. **Check results:**
-   ```bash
-   cat results/capacity_results.csv
-   cat results/noise_robustness.csv
-   cat results/ablation_results.csv
-   ```
-
-4. **Expected runtime:**
-   - Quick mode (`--quick`): ~2-5 minutes
-   - Full validation: ~15-30 minutes (depending on hardware)
-
-### Verification
-
-To verify your results match the manuscript:
-
-```bash
-# Run and save results
-python CONN_VALIDATION_V4_FINAL.py > validation_log.txt
-
-# Check capacity improvement (conservative estimate ~1.38×)
-grep "improvement" results/capacity_results.csv
-
-# Check ablation results (Full CONN should be best)
-cat results/ablation_results.csv
-```
-
-**Note:** Quick mode may show higher numbers (2-4×) due to small-N artifacts. 
-These are exploratory upper bounds, not validated measurements.
+- Current repository uses λ=4.0 (exploratory)
+- Paper uses λ=1.0 (optimal, validated)
+- Both implementations are mathematically correct
+- Performance difference is due to hyperparameter choice only
 
 ---
 
@@ -346,14 +242,15 @@ These are exploratory upper bounds, not validated measurements.
 If you use this code, please cite:
 
 ```bibtex
-@article{marku2026conn,
+@article{marku2025conn,
   title={Topological Phase Constraints and Amplitude Dynamics Improve 
          Associative Memory in Oscillatory Neural Networks},
   author={Marku, Labinot},
   journal={ResearchGate Preprint},
-  year={2026},
-  doi={10.13140/RG.2.2.25288.99841},
-  note={AI collaboration: Claude (Anthropic), ChatGPT (OpenAI)}
+  year={2025},
+  doi={10.13140/RG.2.2.21347.00801},
+  note={Code: https://github.com/labinot-marku/CONN-Associative-Memory. 
+        AI collaboration: Claude (Anthropic), ChatGPT (OpenAI)}
 }
 ```
 
@@ -361,100 +258,83 @@ If you use this code, please cite:
 
 ## 🤝 Contributing
 
-This is a research implementation. If you find issues or have improvements:
+This is a research implementation for validation and reproduction of published results.
 
+**To contribute:**
 1. Open an issue describing the problem
-2. Provide minimal reproducible example
-3. Suggest fix (if you have one)
+2. Provide a minimal reproducible example
+3. Suggest a fix if you have one
 
-**Note:** This code is primarily for validation and reproduction of published results.
+**Note:** The primary purpose is validation of published claims, not active development.
+
+---
+
+## 👤 Author & Contact
+
+**Labinot Marku, M.D.**  
+Department of Neurosurgery  
+KRH Klinikum Nordstadt Hannover, Germany
+
+📧 Email: labinot.marku@krh.de  
+🔬 ResearchGate: [Profile](https://www.researchgate.net/profile/Labinot-Marku)  
+💻 GitHub: [Issues](https://github.com/labinot-marku/CONN-Associative-Memory/issues)
+
+### AI Collaboration Acknowledgment
+
+This research involved significant collaboration with AI assistants:
+- **Claude** (Anthropic): Implementation, debugging, documentation
+- **ChatGPT** (OpenAI): Validation, optimization, analysis
+
+All AI contributions are fully disclosed in the manuscript acknowledgments.
 
 ---
 
 ## 📜 License
 
-MIT License - see LICENSE file for details.
+MIT License – see [LICENSE](LICENSE) file for details.
 
-**Academic Use:** Free for research and educational purposes.  
-**Commercial Use:** Contact author for licensing.
-
----
-
-## 👤 Author
-
-**Labinot Marku, M.D.**
-- Institution: KRH Klinikum Nordstadt Hannover
-- Email: labinot.marku@krh.de
-- ResearchGate: [Profile](https://www.researchgate.net/profile/Labinot-Marku)
-
-**AI Collaboration Acknowledgment:**  
-This work involved collaboration with Claude (Anthropic) and ChatGPT (OpenAI) for implementation, debugging, and documentation.
-
----
-
-## 🔍 Transparency Statement
-
-### AI Involvement
-
-This research involved significant AI collaboration:
-
-- **Conceptualization:** Human (L.M.)
-- **Mathematical formulation:** Human with AI assistance
-- **Implementation:** Joint human-AI (iterative debugging)
-- **Bug discovery:** Joint (sign error found during validation)
-- **Documentation:** AI-assisted
-
-All AI contributions are fully disclosed in the manuscript acknowledgments.
-
-### Code Evolution
-
-1. **Initial implementation:** Browser-based (TSX/React) for interactive exploration
-2. **Bug discovery:** Sign error in coherence gradient found during testing
-3. **Correction:** Fixed to proper gradient descent
-4. **Python conversion:** This repository (CONN_VALIDATION_V4_FINAL.py)
-
-**The corrected version is the one validated and reported in the manuscript.**
+**Academic use:** Free for research and educational purposes  
+**Commercial use:** Contact author for licensing
 
 ---
 
 ## ❓ FAQ
 
-### Q: Why was there a sign error?
+### Q: Why does the code use λ=4.0 instead of the optimal λ=1.0?
 
-**A:** Common mistake when implementing gradient descent. The energy function has a positive coherence term, but the dynamics follow -∇E (gradient descent), requiring a negative sign. This was caught during validation testing.
+**A:** This repository represents exploratory research at λ=4.0. The published paper subsequently optimized hyperparameters through systematic grid search and found λ=1.0 to be optimal. Both implementations are mathematically valid—they differ only in parameter choice.
 
-### Q: Do the Python results match the paper?
+**Note:** "Quick mode" (`--quick` flag) reduces trial counts and network sizes for faster testing—it does not change the λ value. To use optimal parameters, you must manually modify the code.
 
-**A:** Yes, this corrected Python implementation reproduces the browser-based (TSX) results that generated the manuscript figures. However, quick-mode exploratory results may show higher numbers than the validated conservative estimates reported in the paper.
+### Q: How do I reproduce the exact paper results?
 
-### Q: Can I use the uncorrected version?
+**A:** Change line 61 from `LAMBDA = 4.0` to `LAMBDA = 1.0`, then run the validation suite. All other parameters are already correct.
 
-**A:** No. The uncorrected version implements gradient ascent and will not work. Only the corrected version (this repository) is valid.
+### Q: Are the dynamics mathematically correct?
 
-### Q: How can I verify the fix is correct?
+**A:** Yes. The implementation correctly uses gradient descent with negative signs in both coupling and coherence terms. This has been verified against the paper's mathematical formulation.
 
-**A:** Run the validation suite. You should see:
-- Stable convergence (phi converges to {0, π})
-- Capacity improvement (exploratory may show 2-4×, validated is ~1.38×)
-- Ablation: At easy regime, all similar; near capacity, Full CONN best
+### Q: What's the difference between "exploratory" and "validated" results?
 
-If you see divergence or poor performance, check you're using the corrected version.
+**A:** 
+- **Exploratory (λ=4.0):** This repository's current configuration, showing suboptimal capacity
+- **Validated (λ=1.0):** Paper's optimized configuration with rigorous 30-trial validation
 
-### Q: Why does the code show 4× but the paper reports 1.38×?
+Both are scientifically valid explorations of the CONN mechanism.
 
-**A:** The code's quick mode at N=32 shows exploratory upper bounds (artifacts from small network size and optimistic thresholds). The paper reports conservative, rigorously validated estimates. Always use the paper's 1.38× for claims.
+### Q: Can I use this code for benchmarking?
 
----
-
-## 📞 Contact
-
-For questions about the implementation or results:
-
-- Email: labinot.marku@krh.de
-- ResearchGate: Message through platform
-- GitHub Issues: For bug reports
+**A:** Yes, but use λ=1.0 (optimal) for fair comparison. The current λ=4.0 configuration is 33% below optimal capacity.
 
 ---
 
-**Last Updated:** January 2026  
-**Version:** 2.0 (Corrected with exploratory disclaimer)
+**Last Updated:** January 18, 2026  
+**Version:** 3.0 (Corrected documentation with accurate hyperparameter guidance)
+
+---
+
+## 🔍 Version History
+
+- **v1.0** (Dec 2025): Initial implementation with λ=4.0
+- **v2.0** (Jan 2026): Added validation suite and documentation
+- **v3.0** (Jan 2026): **Corrected README** with accurate hyperparameter guidance and removal of misleading "bug fix" narrative

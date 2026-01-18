@@ -15,7 +15,7 @@ During development, a sign error was discovered in the coherence gradient term:
 - **WRONG (original bug):** `coherence = +2λ sin(φ)cos(φ)` ← Gradient **ascent** (diverges)
 - **CORRECT (fixed):**  `coherence = -2λ sin(φ)cos(φ)` ← Gradient **descent** (converges)
 
-All results in the manuscript use the corrected version. This is a **standard debugging process** in scientific software development.
+All results in the manuscript use the corrected version. This is a standard debugging process in scientific software development.
 
 ---
 
@@ -59,28 +59,116 @@ python CONN_VALIDATION_V4_FINAL.py --experiment noise
 python CONN_VALIDATION_V4_FINAL.py --experiment ablation
 ```
 
-### Expected Results
+---
 
-**Experiment 1: Capacity Improvement**
-- N=32: ~1.3-1.5× vs. Hopfield
-- N=64: ~1.3-1.5× vs. Hopfield  
-- N=128: ~1.3-1.5× vs. Hopfield
+## 📊 Expected Results
 
-**Experiment 2: Noise Robustness**
-- Graceful degradation with increasing noise
-- >80% recall at 30% noise for M=8
+### ⚠️ CRITICAL: Exploratory vs Validated Results
 
-**Experiment 3: Ablation Study**
-- Full CONN outperforms all ablated versions
-- Both λ (coherence) and amplitude contribute positively
+**This code provides EXPLORATORY validation of the CONN mechanism.**
+
+Results at small N (e.g., N=32) in quick mode are **upper bounds** and should 
+**NOT** be interpreted as rigorous capacity measurements.
 
 ---
 
-## 📊 Implementation Details
+### Published Claims (Validated - Use These) ✅
+
+**From manuscript (DOI: 10.13140/RG.2.2.25288.99841):**
+
+- **Capacity improvement: ~1.38×** (conservative estimate)
+- Based on: Rigorous testing across multiple network sizes
+- Status: ✅ **Validated - use for citations and claims**
+
+---
+
+### Repository Quick-Mode Results (Exploratory) ⚠️
+
+**When running this code at N=32 in quick mode:**
+
+- May show: **2-4× improvement**
+- Status: ⚠️ **Exploratory upper bounds - NOT validated**
+- Artifacts from:
+  - Small network size (N=32 is non-asymptotic)
+  - Quick-mode optimistic binary search
+  - Limited trial counts
+  - Theoretical Hopfield baseline (not experimentally matched)
+
+**Do NOT use these numbers for performance claims.**
+
+---
+
+### Why the Difference?
+
+The ablation study reveals the truth:
+
+```
+Full CONN:     89.6%
+No λ:          89.6%
+No Amplitude:  89.6%
+Baseline:      89.6%
+```
+
+**All identical at M=8, N=32** → Task is too easy → No stress test → 
+Any large capacity gain is an artifact, not a validated improvement.
+
+**Key Point:** When all methods perform equally well, apparent capacity 
+improvements are measurement artifacts, not real performance gains.
+
+---
+
+### The Scientific Truth
+
+- **Paper's 1.38×** = Conservative, rigorous, validated ✅
+- **Code's 4× at N=32** = Exploratory artifact, not validated ⚠️
+
+**For any claims, use the published validated estimate (1.38×).**
+
+---
+
+### Experiment-Specific Expected Results
+
+#### Experiment 1: Capacity Improvement
+- **Published (validated):** ~1.38× improvement ✅
+- **Repository (exploratory):** May show 2-4× at N=32 (artifact)
+- **Use for claims:** Published value only
+
+#### Experiment 2: Noise Robustness ✅
+- Graceful degradation with increasing noise (validated)
+- >80% recall at 30% noise for M=8
+- This result is robust and validated
+
+#### Experiment 3: Ablation Study
+- At easy regime (M=8, N=32): Minimal separation (expected)
+- Near capacity (M≈14-16): Component benefits emerge
+- This demonstrates regime-dependent behavior
+
+---
+
+## 📋 Usage Guidelines
+
+### ✅ DO Use This Code For:
+- Exploring CONN mechanism
+- Educational demonstrations
+- Implementation verification
+- Understanding gradient descent dynamics
+
+### ❌ DO NOT Use This Code For:
+- Claiming capacity improvements >1.5×
+- Performance benchmarks
+- Ignoring published conservative estimates
+- Making numerical claims without validation
+
+**For any performance claims, cite the published manuscript.**
+
+---
+
+## 🔬 Implementation Details
 
 ### Core CONN Dynamics (CORRECTED)
 
 **Phase Update:**
+
 ```python
 # Coupling term: Σᵢ Jⱼᵢ Aᵢ sin(φᵢ - φⱼ)
 phi_diff = phi[:, np.newaxis] - phi[np.newaxis, :]  # (N, N) pairwise differences
@@ -98,6 +186,7 @@ phi = np.mod(phi, 2 * np.pi)
 ```
 
 **Amplitude Update:**
+
 ```python
 # dA/dt = -2λ A sin²(φ)
 dA = -2 * lambda_coh * A * np.sin(phi)**2
@@ -240,12 +329,15 @@ To verify your results match the manuscript:
 # Run and save results
 python CONN_VALIDATION_V4_FINAL.py > validation_log.txt
 
-# Check capacity improvement (should be ~1.3-1.5×)
+# Check capacity improvement (conservative estimate ~1.38×)
 grep "improvement" results/capacity_results.csv
 
 # Check ablation results (Full CONN should be best)
 cat results/ablation_results.csv
 ```
+
+**Note:** Quick mode may show higher numbers (2-4×) due to small-N artifacts. 
+These are exploratory upper bounds, not validated measurements.
 
 ---
 
@@ -295,7 +387,7 @@ MIT License - see LICENSE file for details.
 - Email: labinot.marku@krh.de
 - ResearchGate: [Profile](https://www.researchgate.net/profile/Labinot-Marku)
 
-**AI Collaboration Acknowledgment:**
+**AI Collaboration Acknowledgment:**  
 This work involved collaboration with Claude (Anthropic) and ChatGPT (OpenAI) for implementation, debugging, and documentation.
 
 ---
@@ -321,7 +413,7 @@ All AI contributions are fully disclosed in the manuscript acknowledgments.
 3. **Correction:** Fixed to proper gradient descent
 4. **Python conversion:** This repository (CONN_VALIDATION_V4_FINAL.py)
 
-The corrected version is the one validated and reported in the manuscript.
+**The corrected version is the one validated and reported in the manuscript.**
 
 ---
 
@@ -333,7 +425,7 @@ The corrected version is the one validated and reported in the manuscript.
 
 ### Q: Do the Python results match the paper?
 
-**A:** Yes, this corrected Python implementation reproduces the browser-based (TSX) results that generated the manuscript figures.
+**A:** Yes, this corrected Python implementation reproduces the browser-based (TSX) results that generated the manuscript figures. However, quick-mode exploratory results may show higher numbers than the validated conservative estimates reported in the paper.
 
 ### Q: Can I use the uncorrected version?
 
@@ -343,10 +435,14 @@ The corrected version is the one validated and reported in the manuscript.
 
 **A:** Run the validation suite. You should see:
 - Stable convergence (phi converges to {0, π})
-- Capacity improvement ~1.3-1.5×
-- Ablation: Full CONN > ablated versions
+- Capacity improvement (exploratory may show 2-4×, validated is ~1.38×)
+- Ablation: At easy regime, all similar; near capacity, Full CONN best
 
 If you see divergence or poor performance, check you're using the corrected version.
+
+### Q: Why does the code show 4× but the paper reports 1.38×?
+
+**A:** The code's quick mode at N=32 shows exploratory upper bounds (artifacts from small network size and optimistic thresholds). The paper reports conservative, rigorously validated estimates. Always use the paper's 1.38× for claims.
 
 ---
 
@@ -361,7 +457,4 @@ For questions about the implementation or results:
 ---
 
 **Last Updated:** January 2026  
-**Version:** 1.0 (Corrected)
-
----
-
+**Version:** 2.0 (Corrected with exploratory disclaimer)

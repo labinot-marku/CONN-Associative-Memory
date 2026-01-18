@@ -48,15 +48,15 @@ pip install numpy matplotlib scipy
 
 ```bash
 # Full validation suite (reproduces all manuscript results)
-python CONN_CORRECT_FROM_TSX.py
+python CONN_VALIDATION_V4_FINAL.py
 
 # Quick test (N=32 only)
-python CONN_CORRECT_FROM_TSX.py --quick
+python CONN_VALIDATION_V4_FINAL.py --quick
 
 # Single experiment
-python CONN_CORRECT_FROM_TSX.py --experiment capacity
-python CONN_CORRECT_FROM_TSX.py --experiment noise
-python CONN_CORRECT_FROM_TSX.py --experiment ablation
+python CONN_VALIDATION_V4_FINAL.py --experiment capacity
+python CONN_VALIDATION_V4_FINAL.py --experiment noise
+python CONN_VALIDATION_V4_FINAL.py --experiment ablation
 ```
 
 ### Expected Results
@@ -145,7 +145,7 @@ dφⱼ/dt = -∂E/∂φⱼ = -½ Σᵢ Jᵢⱼ Aᵢ Aⱼ sin(φᵢ - φⱼ) - 2�
 
 ```
 CONN-Associative-Memory/
-├── CONN_CORRECT_FROM_TSX.py     # Main implementation (CORRECTED)
+├── CONN_VALIDATION_V4_FINAL.py   # Main implementation (CORRECTED)
 ├── README.md                     # This file
 ├── LICENSE                       # MIT License
 ├── requirements.txt              # Python dependencies
@@ -218,7 +218,7 @@ coherence = -2 * lambda_coh * A**2 * np.sin(phi) * np.cos(phi)
 
 2. **Run full validation:**
    ```bash
-   python CONN_CORRECT_FROM_TSX.py
+   python CONN_VALIDATION_V4_FINAL.py
    ```
 
 3. **Check results:**
@@ -238,7 +238,7 @@ To verify your results match the manuscript:
 
 ```bash
 # Run and save results
-python CONN_CORRECT_FROM_TSX.py > validation_log.txt
+python CONN_VALIDATION_V4_FINAL.py > validation_log.txt
 
 # Check capacity improvement (should be ~1.3-1.5×)
 grep "improvement" results/capacity_results.csv
@@ -319,7 +319,7 @@ All AI contributions are fully disclosed in the manuscript acknowledgments.
 1. **Initial implementation:** Browser-based (TSX/React) for interactive exploration
 2. **Bug discovery:** Sign error in coherence gradient found during testing
 3. **Correction:** Fixed to proper gradient descent
-4. **Python conversion:** This repository (CONN_CORRECT_FROM_TSX.py)
+4. **Python conversion:** This repository (CONN_VALIDATION_V4_FINAL.py)
 
 The corrected version is the one validated and reported in the manuscript.
 

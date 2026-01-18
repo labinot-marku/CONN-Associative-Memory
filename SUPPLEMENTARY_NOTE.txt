@@ -1,0 +1,31 @@
+IMPORTANT NOTE ABOUT SUPPLEMENTARY MATERIAL RESULTS
+
+The supplementary PDF mentions capacity of 2.25× (α = 0.281).
+
+This is an EXPLORATORY result from quick-mode testing at N=32 and 
+represents an upper bound, NOT a validated measurement.
+
+VALIDATED RESULT (use for claims):
+- Capacity improvement: ~1.38×
+- Source: Published paper (DOI: 10.13140/RG.2.2.25288.99841)
+- Status: Rigorous, conservative, validated
+
+REPOSITORY RESULTS (exploratory only):
+- Quick-mode at N=32 may show: 2-4×
+- Status: Exploratory upper bounds due to:
+  * Small network size (non-asymptotic regime)
+  * Optimistic binary search thresholds
+  * Limited trial counts in quick mode
+
+WHY THE DIFFERENCE:
+The ablation study at M=8, N=32 shows all methods perform identically 
+(~90%), indicating the regime is too easy to stress-test the mechanism.
+Any large capacity gain in this regime is a measurement artifact.
+
+ALWAYS USE THE PUBLISHED VALIDATED ESTIMATE (1.38×) FOR CLAIMS.
+
+See validation/README.md for complete technical explanation.
+
+---
+Date: January 2026
+Author: Labinot Marku, M.D.

@@ -2,11 +2,15 @@
 
 **Part of**: [CONN Associative Memory Research](https://github.com/labinot-marku/CONN-Associative-Memory)
 
+**Preprint**: [ResearchGate Publication](https://www.researchgate.net/publication/400638921_Gated_Higher-Order_Dynamics_with_Guaranteed_Return_An_Exploratory_Framework_for_the_Capacity-Stability_Trade-Off)
+
+**DOI**: [10.13140/RG.2.2.23260.24962](https://doi.org/10.13140/RG.2.2.23260.24962)
+
 ---
 
 This folder contains simulation code accompanying the preprint:
 
-**"Externalized Cognitive State Reconstruction via Gated Higher-Order Dynamics: A Fiber-Bundle Framework for Bounded Recursive Processing"**  
+**"Gated Higher-Order Dynamics with Guaranteed Return: An Exploratory Framework for the Capacity-Stability Trade-Off"**  
 Author: Labinot Marku, M.D.
 
 The code demonstrates that nonlinear systems with gated higher-order interactions can remain dynamically stable even when classical worst-case (volumetric) stability criteria are violated by orders of magnitude.
@@ -14,6 +18,7 @@ The code demonstrates that nonlinear systems with gated higher-order interaction
 ---
 
 ## Quick Start
+
 ```bash
 # Install dependencies
 pip install -r requirements.txt
@@ -50,6 +55,7 @@ While CONN demonstrated practical benefits of complex-valued gating, this work p
 ## Model Overview
 
 ### Dynamics
+
 ```
 ẋ = -A x - u ∇E_cubic(x) - 2λu x
 u̇ = -α u + β σ(‖x‖)
@@ -122,14 +128,18 @@ See preprint for complete mathematical proofs.
 ---
 
 ## Citation
+
+If you use this code or reference this work, please cite:
+
 ```bibtex
 @article{marku2026gated,
-  title={Externalized Cognitive State Reconstruction via Gated Higher-Order Dynamics: 
-         A Fiber-Bundle Framework for Bounded Recursive Processing},
+  title={Gated Higher-Order Dynamics with Guaranteed Return: 
+         An Exploratory Framework for the Capacity-Stability Trade-Off},
   author={Marku, Labinot},
   journal={ResearchGate Preprint},
   year={2026},
-  url={https://github.com/labinot-marku/CONN-Associative-Memory/tree/main/Gated%20Higher-Order%20Dynamics}
+  doi={10.13140/RG.2.2.23260.24962},
+  url={https://www.researchgate.net/publication/400638921}
 }
 ```
 
@@ -151,6 +161,7 @@ For the CONN paper:
 
 - **ResearchGate**: [Labinot Marku](https://www.researchgate.net/profile/Labinot-Marku)
 - **GitHub**: [@labinot-marku](https://github.com/labinot-marku)
+- **Email**: labinot.marku@krh.de
 - **Issues**: [Report here](https://github.com/labinot-marku/CONN-Associative-Memory/issues)
 
 ---
@@ -172,34 +183,6 @@ See [repository LICENSE](../../LICENSE)
 
 ---
 
-**Last Updated**: February 10, 2026
-```
-
----
-
-## **AFTER PASTING**:
-
-1. **Commit message** box will appear at bottom
-2. **Paste this commit message**:
-```
-Add gated-dynamics folder with README
-
-New preprint on trajectory-constrained stability in gated higher-order 
-systems. Demonstrates order-of-magnitude conservatism gaps (~165.7×) 
-between classical worst-case bounds and realized trajectory curvature.
-
-Key results: 74% convergence in Regime B, all stable trials violate 
-governor inequality, trajectory confinement mechanism validated.
-```
-
-3. **Click**: "Commit new file"
-
----
-
-## **⚠️ IMPORTANT NOTE**
-
-I see you named the folder `Gated Higher-Order Dynamics` (with spaces).
-
-**This will work**, but the URL will have `%20` for spaces:
-```
-.../tree/main/Gated%20Higher-Order%20Dynamics
+**Published**: February 10, 2026  
+**DOI**: 10.13140/RG.2.2.23260.24962  
+**Status**: Public preprint with verified reproducible code

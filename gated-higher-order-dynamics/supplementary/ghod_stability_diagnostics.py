@@ -1,11 +1,13 @@
 """
-Discrete GHOD Stability Diagnostics
+Discrete GHOD Stability Diagnostics (CORRECTED VERSION)
 
 Supplementary code for: "Gated Higher-Order Dynamics with Guaranteed Return"
 Author: Labinot Marku, M.D.
 DOI: 10.13140/RG.2.2.23260.24962
 
 This module provides reproducible stability diagnostics for discrete GHOD systems.
+
+CORRECTION: Fixed gate dynamics (line 330) to match Section 2.5 of main manuscript.
 """
 
 import numpy as np
@@ -59,6 +61,21 @@ def vector_field(x, u, A, T, lam):
     """
     g = cubic_gradient(x, T)
     return -A @ x - u * g - 2 * lam * u * x
+
+
+def sigmoid(h, k=10.0, theta=0.5):
+    """
+    Sigmoid activation function for gate dynamics.
+    
+    Args:
+        h: Input (typically norm of state)
+        k: Steepness parameter
+        theta: Threshold
+    
+    Returns:
+        sigmoid(h) in [0,1]
+    """
+    return 1.0 / (1.0 + np.exp(-k * (h - theta)))
 
 
 # ==============================
@@ -141,7 +158,7 @@ def stability_diagnostics(A, T, lam, u_min, u_max, dt, R,
     # 2. Estimate rho_max
     rho_max = estimate_rho_max(T, R, n_samples, seed)
     
-    # 3. Compute stability margin and bound
+    # 3. Compute stability margin and bound (CORRECTED FORMULA)
     M_min = a_min + 2*lam*u_min - 0.5*u_max*rho_max
     C_max = a + 2*lam*u_max + 0.5*u_max*rho_max
     
@@ -212,33 +229,31 @@ def stability_diagnostics(A, T, lam, u_min, u_max, dt, R,
 
 def validate_lyapunov_descent(trajectory_x, verbose=True):
     """
-    Verify empirical Lyapunov function descent.
+    Validate empirical Lyapunov descent on a trajectory.
     
     Args:
         trajectory_x: List or array of state vectors (K, N)
         verbose: Print validation results
     
     Returns:
-        dict with keys:
-            - V_values: Lyapunov values V(x_k) = ½‖x_k‖²
-            - is_decreasing: Boolean
-            - empirical_gamma: Average descent rate
-            - max_norm: Maximum ‖x_k‖
-            - final_norm: Final ‖x_k‖
+        dict with validation statistics
     """
     trajectory_x = np.array(trajectory_x)
     
-    # Compute Lyapunov values
+    # Compute V(x) = 0.5‖x‖²
     V_values = 0.5 * np.sum(trajectory_x**2, axis=1)
     
-    # Check monotonic decrease
+    # Check monotonicity
     diffs = np.diff(V_values)
     is_decreasing = np.all(diffs <= 0)
     
-    # Compute empirical descent rate
-    empirical_gamma = -np.mean(diffs[diffs < 0]) if np.any(diffs < 0) else 0.0
+    # Empirical descent rate
+    if len(V_values) > 1:
+        empirical_gamma = -np.mean(diffs) / np.mean(V_values[:-1])
+    else:
+        empirical_gamma = 0.0
     
-    # Compute norms
+    # Trajectory norms
     norms = np.linalg.norm(trajectory_x, axis=1)
     max_norm = np.max(norms)
     final_norm = norms[-1]
@@ -280,6 +295,8 @@ def validate_lyapunov_descent(trajectory_x, verbose=True):
 if __name__ == "__main__":
     """
     Example: Verify stability for a synthetic GHOD system
+    
+    CORRECTED: Gate dynamics now use sigmoid activation (matches Section 2.5)
     """
     
     # System parameters
@@ -314,7 +331,7 @@ if __name__ == "__main__":
         verbose=True
     )
     
-    # Simulate trajectory
+    # Simulate trajectory with CORRECTED gate dynamics
     print("\nSimulating trajectory...")
     x = np.random.randn(N) * 2.0
     u = 0.0
@@ -324,10 +341,13 @@ if __name__ == "__main__":
     for _ in range(500):
         trajectory.append(x.copy())
         
-        # Update
+        # Update state
         f = vector_field(x, u, A, T, lam)
         x_next = x + dt * f
-        u_next = u + dt * (alpha * norm(x)**3 - beta * u - lam * u * norm(x)**2)
+        
+        # ✅ CORRECTED gate dynamics (matches Section 2.5)
+        h = norm(x)
+        u_next = u + dt * (-alpha * u + beta * sigmoid(h))
         u_next = np.clip(u_next, 0, u_max)
         
         x, u = x_next, u_next
@@ -336,3 +356,5 @@ if __name__ == "__main__":
     validation = validate_lyapunov_descent(trajectory, verbose=True)
     
     print("\n✓ Diagnostics complete")
+    print("\nNOTE: Gate dynamics corrected to match Section 2.5 of main manuscript.")
+    print("Previous version had incorrect cubic-dependent gate update.")

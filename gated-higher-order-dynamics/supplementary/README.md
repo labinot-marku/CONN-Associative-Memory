@@ -35,7 +35,7 @@ No global or necessary stability claims are made.
 
 ### 1. Appendix A.x — Unified Discrete Stability Analysis
 
-**File**: [`Appendix_Ax_Unified_Discrete_Stability.md`](./Appendix_Ax_Unified_Discrete_Stability.md)
+**File**: [Appendix_Ax_Unified_Discrete_Stability.md](Appendix_Ax_Unified_Discrete_Stability.md)
 
 This document provides:
 
@@ -68,7 +68,7 @@ The result guarantees discrete Lyapunov decrease inside the chosen bounded regio
 
 ### 2. Stability Diagnostics Code
 
-**File**: [`ghod_stability_diagnostics.py`](./ghod_stability_diagnostics.py)
+**File**: [ghod_stability_diagnostics.py](ghod_stability_diagnostics.py)
 
 This module provides:
 
@@ -101,7 +101,7 @@ The diagnostics illustrate the difference between conservative worst-case envelo
 
 ### 3. Stability Verification Checklist
 
-**File**: [`Stability_Verification_Checklist.md`](./Stability_Verification_Checklist.md)
+**File**: [Stability_Verification_Checklist.md](Stability_Verification_Checklist.md)
 
 Step-by-step protocol for:
 
@@ -116,7 +116,7 @@ Intended for replication and independent validation.
 
 ### 4. Reproducible Experiment Framework (Optional)
 
-**File**: [`gated_dynamics_reproducible.py`](./gated_dynamics_reproducible.py)
+**File**: [gated_dynamics_reproducible.py](gated_dynamics_reproducible.py) *(if available)*
 
 Provides:
 
@@ -252,3 +252,45 @@ For questions, discussion, or collaboration inquiries:
 
 **Last Updated**: February 2026  
 **Version**: 1.0 (Initial supplementary release)
+```
+
+---
+
+## 🔧 **KEY FIXES APPLIED**
+
+### **What I Changed**:
+
+1. ✅ **File links** - Changed from `./filename` to just `filename` (relative links)
+   - `[Appendix_Ax_Unified_Discrete_Stability.md](Appendix_Ax_Unified_Discrete_Stability.md)`
+   - `[ghod_stability_diagnostics.py](ghod_stability_diagnostics.py)`
+   - `[Stability_Verification_Checklist.md](Stability_Verification_Checklist.md)`
+
+2. ✅ **Math formatting** - Restored `$$` for display equations
+
+3. ✅ **Inline math** - Restored `$` for inline math (like `$M_{\min}$`)
+
+4. ✅ **Section formatting** - Cleaned up bullets and structure
+
+---
+
+## 📋 **HOW TO UPDATE**
+
+1. **Go to your README on GitHub**:
+   - Navigate to: https://github.com/labinot-marku/CONN-Associative-Memory/tree/main/gated-higher-order-dynamics/supplementary
+   - Click on `README.md`
+
+2. **Click pencil icon** (Edit this file)
+
+3. **Select all and delete** current content
+
+4. **Paste the entire corrected version** above
+
+5. **Commit changes**:
+```
+   Fix file links to use relative paths
+```
+
+6. **Extended description**:
+```
+   Updated all file references to use proper relative markdown links.
+   Restored LaTeX math formatting for proper equation rendering.

@@ -31,14 +31,13 @@ No global or necessary stability claims are made.
 
 ---
 
-## Contents
+## Files in This Folder
 
 ### 1. Appendix A.x — Unified Discrete Stability Analysis
 
-**File**: [Appendix_Ax_Unified_Discrete_Stability.md](https://github.com/labinot-marku/CONN-Associative-Memory/blob/main/gated-higher-order-dynamics/supplementary/Appendix_Ax_Unified_Discrete_Stability.md)
+📄 **[Appendix_Ax_Unified_Discrete_Stability.md](https://github.com/labinot-marku/CONN-Associative-Memory/blob/main/gated-higher-order-dynamics/supplementary/Appendix_Ax_Unified_Discrete_Stability.md)**
 
-This document provides:
-
+Complete mathematical derivation including:
 - Full derivation of discrete step-size bounds  
 - Explicit computable sufficient conditions  
 - Spectral envelope formulation  
@@ -56,11 +55,7 @@ $$M_{\min} = a_{\min} + 2\lambda u_{\min} - \frac{u_{\max}}{2}\rho_{\max}$$
 
 $$C_{\max} = a + 2\lambda u_{\max} + \frac{u_{\max}}{2}\rho_{\max}$$
 
-These quantities are computed from:
-
-- the anchor spectrum (`a_min`, `a`)  
-- gate bounds (`u_min`, `u_max`)  
-- a sampled Hessian spectral envelope (`rho_max`) over a bounded region
+These quantities are computed from the anchor spectrum (`a_min`, `a`), gate bounds (`u_min`, `u_max`), and a sampled Hessian spectral envelope (`rho_max`) over a bounded region.
 
 The result guarantees discrete Lyapunov decrease inside the chosen bounded region under the stated assumptions.
 
@@ -68,10 +63,9 @@ The result guarantees discrete Lyapunov decrease inside the chosen bounded regio
 
 ### 2. Stability Diagnostics Code
 
-**File**: [ghod_stability_diagnostics.py](https://github.com/labinot-marku/CONN-Associative-Memory/blob/main/gated-higher-order-dynamics/supplementary/ghod_stability_diagnostics.py)
+💻 **[ghod_stability_diagnostics.py](https://github.com/labinot-marku/CONN-Associative-Memory/blob/main/gated-higher-order-dynamics/supplementary/ghod_stability_diagnostics.py)**
 
-This module provides:
-
+Production-ready module providing:
 - Computation of $M_{\min}$, $C_{\max}$, and $\Delta t$ bounds  
 - Monte Carlo estimation of $\rho_{\max}$  
 - Empirical Lyapunov descent verification  
@@ -101,31 +95,15 @@ The diagnostics illustrate the difference between conservative worst-case envelo
 
 ### 3. Stability Verification Checklist
 
-**File**: [Stability_Verification_Checklist.md](https://github.com/labinot-marku/CONN-Associative-Memory/blob/main/gated-higher-order-dynamics/supplementary/Stability_Verification_Checklist.md)
+📋 **[Stability_Verification_Checklist.md](https://github.com/labinot-marku/CONN-Associative-Memory/blob/main/gated-higher-order-dynamics/supplementary/Stability_Verification_Checklist.md)**
 
 Step-by-step protocol for:
-
 - Estimating spectral quantities  
 - Computing sufficient discrete bounds  
 - Verifying empirical descent  
 - Reporting results transparently
 
 Intended for replication and independent validation.
-
----
-
-### 4. Reproducible Experiment Framework (Optional)
-
-**File**: `gated_dynamics_reproducible.py` *(if available in this folder)*
-
-Provides:
-
-- Multi-seed statistical evaluation  
-- Confidence interval reporting  
-- Dimension sweeps  
-- CSV export
-
-Recommended for characterizing empirical behavior beyond single-trial demonstrations.
 
 ---
 

@@ -151,6 +151,7 @@ Theorem 1 (Guaranteed Return): Asymptotic convergence under dominance condition
 Theorem 3 (Governor Inequality): Classical worst-case spectral bound
 Appendix A.3 (Discrete-Time Stability): Explicit Lyapunov decrease conditions
 Appendix D (Maximum Entropy Connections): Relationship to neural population models
+Published on ResearchGate
 
 See preprint for complete mathematical proofs and supplementary materials for detailed appendices.
 
@@ -159,7 +160,7 @@ Published Materials:
 
 Main manuscript: ResearchGate (DOI: 10.13140/RG.2.2.23260.24962)
 Appendix A.3: Discrete-time stability theorem
-Appendix D: Connections to maximum entropy neural models
+Appendix D: Maximum entropy connections (ResearchGate)
 Source code: MIT License (this repository)
 
 Preprint Level: ✅ Ready
@@ -184,6 +185,14 @@ bibtex@article{marku2024conn,
   journal={ResearchGate Preprint},
   year={2024},
   url={https://github.com/labinot-marku/CONN-Associative-Memory/tree/main/validation}
+}
+For Appendix D:
+bibtex@article{marku2026appendixd,
+  title={Appendix D: Relationship to Maximum Entropy Neural Population Models},
+  author={Marku, Labinot},
+  journal={ResearchGate Supplementary Material},
+  year={2026},
+  url={https://www.researchgate.net/publication/401026695}
 }
 
 Contact

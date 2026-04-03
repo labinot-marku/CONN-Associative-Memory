@@ -34,9 +34,15 @@ The GHOD framework provides a rigorous mathematical theory of stability in syste
 
 Contains: Theorem 1 (Metric-Nonlinear Stabilisation), Theorem HG (Metric-Hypocoercivity), Theorem H-LSI (Log-Sobolev upgrade), Theorem S (Spectral Resolution), Lemma CR (explicit confinement radius R*), Proposition SC (structural conditions for Assumption A5), four corrected hypocoercivity errors, and engagement with Goto et al. 2025 (arXiv:2512.13859).
 
-**Original GHOD framework (February 2026):**
+**Original GHOD framework (February 2026) with appendices:**
 > Marku, L. (2026). *Gated Higher-Order Dynamics with Guaranteed Return: An Exploratory Framework for the Capacity-Stability Trade-Off.*
 > ResearchGate / Zenodo. [DOI: 10.13140/RG.2.2.23260.24962](https://doi.org/10.13140/RG.2.2.23260.24962)
+
+Supplementary materials published alongside the original preprint:
+
+- **Appendix A3** — Discrete-Time GHOD Stability Diagnostics (corrected version): discrete Lyapunov descent theorem, corrected gate dynamics, explicit step-size bounds, reproducible 50-trial sweep results (conservatism ratio ~164×, 36/50 convergence). [ResearchGate](https://www.researchgate.net/profile/Labinot-Marku/research)
+- **Appendix D** — Relationship to Maximum Entropy Neural Population Models: connects the GHOD framework to maximum entropy principles in neural population coding. [ResearchGate](https://www.researchgate.net/profile/Labinot-Marku/research)
+- **Appendix E** — Neurobiological and Clinical Implications of Gated Higher-Order Dynamics: connects the framework to clinical neuroscience and seizure prediction. [ResearchGate](https://www.researchgate.net/profile/Labinot-Marku/research)
 
 ### Core Mathematical Result
 

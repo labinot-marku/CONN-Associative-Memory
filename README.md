@@ -28,9 +28,9 @@ The GHOD framework provides a rigorous mathematical theory of stability in syste
 
 ### Preprints
 
-**Complete merged preprint (March 2026) — current canonical version:**
+**Complete merged preprint (April 2026) — current canonical version:**
 > Marku, L. (2026). *Metric-Induced Stability Beyond Spectral Criteria in Gated Higher-Order Dynamical Systems.*
-> ResearchGate. [DOI: 10.13140/RG.2.2.15154.57288](https://doi.org/10.13140/RG.2.2.15154.57288)
+> ResearchGate. [DOI: 10.13140/RG.2.2.28366.63048](https://doi.org/10.13140/RG.2.2.28366.63048)
 
 Contains: Theorem 1 (Metric-Nonlinear Stabilisation), Theorem HG (Metric-Hypocoercivity), Theorem H-LSI (Log-Sobolev upgrade), Theorem S (Spectral Resolution), Lemma CR (explicit confinement radius R*), Proposition SC (structural conditions for Assumption A5), four corrected hypocoercivity errors, and engagement with Goto et al. 2025 (arXiv:2512.13859).
 
@@ -137,7 +137,7 @@ E(φ, A) = -½ Σᵢⱼ Jᵢⱼ Aᵢ Aⱼ cos(φᵢ - φⱼ) + λ Σⱼ Aⱼ² s
   author={Marku, Labinot},
   journal={ResearchGate Preprint},
   year={2026},
-  doi={10.13140/RG.2.2.15154.57288},
+  doi={10.13140/RG.2.2.28366.63048},
   note={Code: https://github.com/labinot-marku/CONN-Associative-Memory/
         tree/main/gated-higher-order-dynamics}
 }

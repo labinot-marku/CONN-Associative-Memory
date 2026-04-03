@@ -1,246 +1,160 @@
-# CONN Validation Suite – Research Implementation
+# CONN-Associative-Memory – Research Repository
 
-**Coherence Oscillatory Neural Networks (CONN)**
+**Coherence Oscillatory Neural Networks (CONN) + Gated Higher-Order Dynamics (GHOD)**
 
 [![DOI](https://img.shields.io/badge/DOI-10.13140%2FRG.2.2.21347.00801-blue)](https://doi.org/10.13140/RG.2.2.21347.00801)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://python.org)
+
+**Author:** Labinot Marku, M.D. — Department of Neurosurgery, KRH Klinikum Nordstadt Hannover, Germany
+**AI Collaboration:** Claude (Anthropic), ChatGPT (OpenAI), Gemini (Google)
 
 ---
 
-## 📄 Manuscript Reference
+## 🔬 Research Contents
 
-**Title:** Topological Phase Constraints and Amplitude Dynamics Improve Associative Memory in Oscillatory Neural Networks
+This repository contains two connected research programmes:
 
-**Author:** Labinot Marku, M.D.  
-**Institution:** KRH Klinikum Nordstadt Hannover, Germany  
-**Date:** December 21, 2025  
-**DOI:** [10.13140/RG.2.2.21347.00801](https://doi.org/10.13140/RG.2.2.21347.00801)  
-**AI Collaboration:** Claude (Anthropic), ChatGPT (OpenAI)
+| Framework | Status | Preprint | Code |
+|-----------|--------|----------|------|
+| **GHOD** — Gated Higher-Order Dynamics | Active (2026) | [See below](#-ghod-gated-higher-order-dynamics) | [`/gated-higher-order-dynamics`](gated-higher-order-dynamics/) |
+| **CONN** — Coherence Oscillatory Neural Networks | Complete (2025) | [See below](#-conn-coherence-oscillatory-neural-networks) | Root directory |
 
 ---
 
-## ⚠️ Important: Hyperparameter Configuration
+## 📐 GHOD: Gated Higher-Order Dynamics
 
-This repository contains a **valid exploratory implementation** of CONN dynamics at **λ=4.0** (coherence strength).
+The GHOD framework provides a rigorous mathematical theory of stability in systems where higher-order interactions are gated — transiently activated to enhance expressivity, then decayed to ensure return to a stable anchor.
 
-The **published paper** subsequently found **λ=1.0 to be optimal** through systematic grid search validation (36 configurations tested).
+### Preprints
 
-### Current Repository Configuration (λ=4.0)
+**Complete merged preprint (March 2026) — current canonical version:**
+> Marku, L. (2026). *Metric-Induced Stability Beyond Spectral Criteria in Gated Higher-Order Dynamical Systems.*
+> ResearchGate. [DOI: 10.13140/RG.2.2.15154.57288](https://doi.org/10.13140/RG.2.2.15154.57288)
 
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| **λ** (lambda_coh) | **4.0** | Coherence strength (suboptimal) |
-| β (beta) | 0.5 | Amplitude regularization |
-| η_φ (eta_phi) | 0.005 | Phase learning rate |
-| η_A (eta_A) | 0.03 | Amplitude learning rate |
-| Steps | 150 | Integration timesteps |
+Contains: Theorem 1 (Metric-Nonlinear Stabilisation), Theorem HG (Metric-Hypocoercivity), Theorem H-LSI (Log-Sobolev upgrade), Theorem S (Spectral Resolution), Lemma CR (explicit confinement radius R*), Proposition SC (structural conditions for Assumption A5), four corrected hypocoercivity errors, and engagement with Goto et al. 2025 (arXiv:2512.13859).
 
-**Expected results with λ=4.0:**
-- Capacity: α ≈ 0.25 at N=32 (8 patterns for 32 neurons, suboptimal)
-- Ablation: Minimal separation between conditions
+**Original GHOD framework (February 2026):**
+> Marku, L. (2026). *Gated Higher-Order Dynamics with Guaranteed Return: An Exploratory Framework for the Capacity-Stability Trade-Off.*
+> ResearchGate / Zenodo. [DOI: 10.13140/RG.2.2.23260.24962](https://doi.org/10.13140/RG.2.2.23260.24962)
 
-### Paper-Validated Optimal Configuration (λ=1.0)
+### Core Mathematical Result
 
-**From paper Table S1 (page 3), Hyperparameter Optimization (page 5-6):**
+The fundamental observation is an exact decomposition:
 
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| **λ** (lambda_coh) | **1.0** | Coherence strength (OPTIMAL) |
-| β (beta) | 0.5 | Amplitude regularization |
-| η_φ (eta_phi) | 0.005 | Phase learning rate |
-| η_A (eta_A) | 0.03 | Amplitude learning rate |
-| Steps | 150 | Integration timesteps |
-
-**Expected results with λ=1.0:**
-- Capacity: α ≈ 0.375 at N=32 (**+50% vs λ=4.0**, 12 patterns for 32 neurons)
-- Ablation shows clear separation:
-  - Full CONN: 85.3%
-  - No λ: 72.1% (-13.2 pp)
-  - No amplitude: 80.9% (-4.4 pp)
-  - Baseline: 68.5%
-
-### 🔧 How to Use Optimal Parameters
-
-**To reproduce published paper results, modify line 61 in the code:**
-
-```python
-# In Config class:
-LAMBDA = 1.0   # Change from 4.0 to 1.0 (OPTIMAL from paper)
-BETA = 0.5     # Keep as-is
+```
+ẋ = -G(x,t)·x - g(t)·r(x)
 ```
 
-**Performance comparison:**
+where `G(x,t) = A + g(t)·H(x)` is the effective quadratic operator and `r(x) = ∇Φ(x) - H(x)·x` is the nonlinear remainder. Global stability emerges from the competition between local quadratic behaviour (governed by G) and global nonlinear dissipation (governed by r(x)) — even when G has negative eigenvalues.
 
-| λ value | N=32 Capacity | Status | Reference |
-|---------|---------------|--------|-----------|
-| 1.0 | α=0.375 (M=12) | ✅ **Optimal** | Paper Table S1 |
-| 2.0 | α=0.344 (M=11) | ⚠️ Acceptable | Paper Table S1 |
-| 4.0 | α=0.250 (M=8) | ❌ **Suboptimal (-33%)** | Current repo |
+### Key Results
 
-**From paper (page 6):** *"λ=1.0 emerged as optimal, yielding 50% higher capacity at N=32 compared to λ=4.0"*
+- **Theorem 1**: Global boundedness holds under superquadratic restoring condition on r(x), even when local eigenvalues of J = -G are positive
+- **Theorem HG**: Exponential entropy decay persists for time-varying g(t) under the unified condition `||g - ḡ||∞ · L < 2ε√μ_LS`
+- **Theorem S**: The transport-corrected operator `J_eff = J + A_G` satisfies `λ_GHOD < 0`, explaining why locally positive eigenvalues do not produce global instability
+- **Lemma CR**: Explicit confinement radius `R* = (δ/C₂)^{1/δ}` — computable without simulation
+
+### GHOD Code
+
+```
+gated-higher-order-dynamics/
+├── gated_dynamics.py                  # Core GHOD simulation (corrected gate dynamics)
+├── supplementary/
+│   └── ghod_stability_diagnostics.py  # Discrete stability diagnostics, Lyapunov validation
+└── README.md
+```
+
+**Three stability regimes** emerge from the balance between dissipation margin δ = λ_min(A) - g_max·L and restoring amplitude C₂ = g_max·β₀:
+
+| Regime | Condition | Behaviour |
+|--------|-----------|-----------|
+| A | δ >> 0, g_max small | Classical stability, no gap |
+| B | δ > 0 small | Confined exploration, conservatism gap (100×–10,000×) |
+| C | δ ≤ 0 | Governor Inequality violated, divergence |
+
+**Reproducible result (Regime B):** 37/50 trials converge despite Governor Inequality violations averaging -214.09; trajectory curvature 10,770× smaller than worst-case predictions.
+
+### Related Work
+
+Independent convergent evidence: Goto, Lopez Rios, Scholz, Vaikuntanathan (2025). *Neuromodulation-inspired gated associative memory networks.* arXiv:2512.13859. Using DMFT and many-body simulations at N=1000, they show multiplicative neuromodulatory gating reorganises attractor structure and bypasses the classical spin-glass transition — convergent with the core GHOD insight that gating decouples capacity from stability.
 
 ---
 
-## 🚀 Quick Start
+## 🔵 CONN: Coherence Oscillatory Neural Networks
 
-### Installation
+### Preprint
+
+> Marku, L. (2025). *Topological Phase Constraints and Amplitude Dynamics Improve Associative Memory in Oscillatory Neural Networks.*
+> ResearchGate. [DOI: 10.13140/RG.2.2.21347.00801](https://doi.org/10.13140/RG.2.2.21347.00801)
+
+### ⚠️ Hyperparameter Configuration
+
+The repository code uses **λ=4.0** (exploratory). The paper validates **λ=1.0** as optimal (50% higher capacity at N=32).
+
+| λ value | N=32 Capacity | Status |
+|---------|--------------|--------|
+| 1.0 | α=0.375 (M=12) | ✅ Optimal — use for citations |
+| 2.0 | α=0.344 (M=11) | ⚠️ Acceptable |
+| 4.0 | α=0.250 (M=8) | ❌ Suboptimal (-33%) — current repo default |
+
+To reproduce paper results, change line 61 in `CONN_VALIDATION_V4_FINAL.py`:
+```python
+LAMBDA = 1.0   # Change from 4.0 to 1.0 (optimal)
+```
+
+### Quick Start
 
 ```bash
 git clone https://github.com/labinot-marku/CONN-Associative-Memory.git
 cd CONN-Associative-Memory
 pip install -r requirements.txt
-```
-
-### Run Validation
-
-**Main implementation:** [`CONN_VALIDATION_V4_FINAL.py`](CONN_VALIDATION_V4_FINAL.py)
-
-```bash
-# Full validation suite (uses current λ=4.0)
 python CONN_VALIDATION_V4_FINAL.py
-
-# Quick test (N=32 only)
-python CONN_VALIDATION_V4_FINAL.py --quick
-
-# Single experiments
-python CONN_VALIDATION_V4_FINAL.py --experiment capacity
-python CONN_VALIDATION_V4_FINAL.py --experiment noise
-python CONN_VALIDATION_V4_FINAL.py --experiment ablation
 ```
-
-**Note:** To get paper-validated results, first change λ to 1.0 (see above).
-
----
-
-## 📊 Expected Results
-
-### With Published Paper Parameters (λ=1.0) ✅
-
-**Validated claims from manuscript:**
-
-1. **Capacity Improvement:** ~1.38× average over Hopfield baseline
-   - **Note:** Capacity α = M/N (patterns per neuron)
-   - N=32: α=0.375 (M=12) vs Hopfield α=0.344 (M=11) → 1.09×
-   - N=64: α=0.359 (M=23) vs Hopfield α=0.266 (M=17) → 1.35×
-   - N=128: α=0.383 (M=49) vs Hopfield α=0.227 (M=29) → 1.69×
-
-2. **Noise Robustness:** ≥80% recall up to 30% phase-flip noise
-
-3. **Ablation Study (N=32, M=8):**
-   - Full CONN: **85.3%**
-   - No λ (λ=0): **72.1%** (-13.2 pp)
-   - No amplitude: **80.9%** (-4.4 pp)
-   - Baseline (Hopfield): **68.5%**
-
-**Status:** ✅ Validated across 30 trials per configuration – use these numbers for citations
-
-### With Current Repository Parameters (λ=4.0) ⚠️
-
-**Expected results:**
-- Capacity: α ≈ 0.25 at N=32 (33% lower than optimal)
-- Ablation: Minimal separation (coherence over-constrains dynamics)
-
-**Status:** ⚠️ Valid exploratory implementation, but suboptimal for performance claims
-
-**Key Point:** Always use the published validated estimates (1.38×) for scientific claims. To reproduce them, switch to λ=1.0.
-
----
-
-## 🔬 Implementation Details
 
 ### CONN Dynamics
 
-The implementation uses **gradient descent** on the energy function:
-
+Energy function:
 ```
 E(φ, A) = -½ Σᵢⱼ Jᵢⱼ Aᵢ Aⱼ cos(φᵢ - φⱼ) + λ Σⱼ Aⱼ² sin²(φⱼ)
-          └──────────┬──────────┘   └────────┬──────────┘
-           Hebbian coupling      Topological prior
 ```
 
-### Phase Update
+### Expected Results (λ=1.0, paper-validated)
 
-```python
-# Coupling term: Σᵢ Jⱼᵢ Aᵢ sin(φᵢ - φⱼ)
-phi_diff = phi[:, np.newaxis] - phi[np.newaxis, :]
-coupling_matrix = J * A[np.newaxis, :] * np.sin(phi_diff)
-coupling = np.sum(coupling_matrix, axis=1)
-
-# Coherence term: -2λ A² sin(φ)cos(φ)
-# Negative sign implements gradient descent (essential for convergence)
-coherence = -2 * lambda_coh * A**2 * np.sin(phi) * np.cos(phi)
-
-# Phase dynamics: dφ/dt = Aⱼ * coupling + coherence
-dphi = A * coupling + coherence
-phi = phi + eta_phi * dphi
-phi = np.mod(phi, 2 * np.pi)
-```
-
-### Amplitude Update
-
-```python
-# Amplitude dynamics: dA/dt = -2λ A sin²(φ) - 2β(A - 1)
-dA = -2 * lambda_coh * A * np.sin(phi)**2 - 2 * beta * (A - 1)
-A = A + eta_A * dA
-A = np.clip(A, 0.01, 2.0)  # Numerical stability
-```
-
-**Mathematical correctness:** Both coupling and coherence terms use **negative** signs to implement gradient descent on the energy function. This is essential for convergence to {0, π} phase attractors.
+- **Capacity:** ~1.38× average over Hopfield baseline (N=32: 1.09×, N=64: 1.35×, N=128: 1.69×)
+- **Noise robustness:** ≥80% recall at 30% phase-flip noise
+- **Ablation (N=32):** Full CONN 85.3% vs Baseline 68.5% (+16.8 pp)
 
 ---
 
-## 📁 Repository Structure
+## 📋 Citation
 
-```
-CONN-Associative-Memory/
-├── CONN_VALIDATION_V4_FINAL.py   # Main implementation
-├── README.md                     # This file
-├── LICENSE                       # MIT License
-├── requirements.txt              # Python dependencies
-├── results/                      # Output CSVs
-│   ├── capacity_results.csv
-│   ├── noise_robustness.csv
-│   └── ablation_results.csv
-├── docs/                         # Documentation
-│   ├── implementation_notes.md
-│   └── reproduction_guide.md
-└── papers/                       # Manuscript PDFs
-    ├── CONN_main_paper.pdf
-    └── CONN_supplementary.pdf
+**GHOD complete preprint (cite this for the full framework):**
+```bibtex
+@article{marku2026ghod_merged,
+  title={Metric-Induced Stability Beyond Spectral Criteria in 
+         Gated Higher-Order Dynamical Systems},
+  author={Marku, Labinot},
+  journal={ResearchGate Preprint},
+  year={2026},
+  doi={10.13140/RG.2.2.15154.57288},
+  note={Code: https://github.com/labinot-marku/CONN-Associative-Memory/
+        tree/main/gated-higher-order-dynamics}
+}
 ```
 
----
+**Original GHOD preprint:**
+```bibtex
+@article{marku2026ghod,
+  title={Gated Higher-Order Dynamics with Guaranteed Return},
+  author={Marku, Labinot},
+  journal={ResearchGate / Zenodo Preprint},
+  year={2026},
+  doi={10.13140/RG.2.2.23260.24962}
+}
+```
 
-## 🔄 Reproducibility
-
-### System Requirements
-
-- Python ≥ 3.8
-- NumPy ≥ 1.20
-- Matplotlib ≥ 3.3
-- SciPy ≥ 1.6
-
-### Reproducing Paper Results
-
-1. **Modify hyperparameters** to optimal values (λ=1.0)
-2. **Run full validation:** `python CONN_VALIDATION_V4_FINAL.py`
-3. **Compare outputs** with published manuscript CSVs
-4. **Expected runtime:** ~15-30 minutes for full validation
-
-### Important Notes
-
-- Current repository uses λ=4.0 (exploratory)
-- Paper uses λ=1.0 (optimal, validated)
-- Both implementations are mathematically correct
-- Performance difference is due to hyperparameter choice only
-
----
-
-## 📖 Citation
-
-If you use this code, please cite:
-
+**CONN preprint:**
 ```bibtex
 @article{marku2025conn,
   title={Topological Phase Constraints and Amplitude Dynamics Improve 
@@ -249,92 +163,28 @@ If you use this code, please cite:
   journal={ResearchGate Preprint},
   year={2025},
   doi={10.13140/RG.2.2.21347.00801},
-  note={Code: https://github.com/labinot-marku/CONN-Associative-Memory. 
-        AI collaboration: Claude (Anthropic), ChatGPT (OpenAI)}
+  note={Code: https://github.com/labinot-marku/CONN-Associative-Memory}
 }
 ```
 
 ---
 
-## 🤝 Contributing
-
-This is a research implementation for validation and reproduction of published results.
-
-**To contribute:**
-1. Open an issue describing the problem
-2. Provide a minimal reproducible example
-3. Suggest a fix if you have one
-
-**Note:** The primary purpose is validation of published claims, not active development.
-
----
-
 ## 👤 Author & Contact
 
-**Labinot Marku, M.D.**  
-Department of Neurosurgery  
-KRH Klinikum Nordstadt Hannover, Germany
+**Labinot Marku, M.D.**
+Department of Neurosurgery, KRH Klinikum Nordstadt Hannover, Germany
 
-📧 Email: labinot.marku@krh.de  
-🔬 ResearchGate: [Profile](https://www.researchgate.net/profile/Labinot-Marku)  
-💻 GitHub: [Issues](https://github.com/labinot-marku/CONN-Associative-Memory/issues)
+📧 labinot.marku@krh.de
+🔬 [ResearchGate Profile](https://www.researchgate.net/profile/Labinot-Marku)
 
-### AI Collaboration Acknowledgment
-
-This research involved significant collaboration with AI assistants:
-- **Claude** (Anthropic): Implementation, debugging, documentation
-- **ChatGPT** (OpenAI): Validation, optimization, analysis
-
-All AI contributions are fully disclosed in the manuscript acknowledgments.
+**AI Collaboration:** Claude (Anthropic), ChatGPT (OpenAI), and Gemini (Google) provided formalization assistance, mathematical validation, implementation support, and systematic parameter search. All theoretical insights, experimental designs, and scientific judgments are the author's. AI contributions are fully disclosed in manuscript acknowledgments.
 
 ---
 
 ## 📜 License
 
-MIT License – see [LICENSE](LICENSE) file for details.
-
-**Academic use:** Free for research and educational purposes  
-**Commercial use:** Contact author for licensing
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## ❓ FAQ
-
-### Q: Why does the code use λ=4.0 instead of the optimal λ=1.0?
-
-**A:** This repository represents exploratory research at λ=4.0. The published paper subsequently optimized hyperparameters through systematic grid search and found λ=1.0 to be optimal. Both implementations are mathematically valid—they differ only in parameter choice.
-
-**Note:** "Quick mode" (`--quick` flag) reduces trial counts and network sizes for faster testing—it does not change the λ value. To use optimal parameters, you must manually modify the code.
-
-### Q: How do I reproduce the exact paper results?
-
-**A:** Change line 61 from `LAMBDA = 4.0` to `LAMBDA = 1.0`, then run the validation suite. All other parameters are already correct.
-
-### Q: Are the dynamics mathematically correct?
-
-**A:** Yes. The implementation correctly uses gradient descent with negative signs in both coupling and coherence terms. This has been verified against the paper's mathematical formulation.
-
-### Q: What's the difference between "exploratory" and "validated" results?
-
-**A:** 
-- **Exploratory (λ=4.0):** This repository's current configuration, showing suboptimal capacity
-- **Validated (λ=1.0):** Paper's optimized configuration with rigorous 30-trial validation
-
-Both are scientifically valid explorations of the CONN mechanism.
-
-### Q: Can I use this code for benchmarking?
-
-**A:** Yes, but use λ=1.0 (optimal) for fair comparison. The current λ=4.0 configuration is 33% below optimal capacity.
-
----
-
-**Last Updated:** January 18, 2026  
-**Version:** 3.0 (Corrected documentation with accurate hyperparameter guidance)
-
----
-
-## 🔍 Version History
-
-- **v1.0** (Dec 2025): Initial implementation with λ=4.0
-- **v2.0** (Jan 2026): Added validation suite and documentation
-- **v3.0** (Jan 2026): **Corrected README** with accurate hyperparameter guidance and removal of misleading "bug fix" narrative
+*Last updated: April 2026*

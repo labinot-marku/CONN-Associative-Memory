@@ -1,4 +1,4 @@
-# Metric-Induced Stability (GHOD v5)
+# Metric-Induced Stability (GHOD)
 
 This folder contains the official numerical validation for the research note: 
 **"Metric-Induced Stability Beyond Spectral Criteria in Gated Higher-Order Dynamical Systems"**

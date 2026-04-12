@@ -10,7 +10,7 @@ Standard neural models often rely on linear eigenvalues (spectral criteria) for 
 This stability theory builds upon the **Gated Higher-Order Dynamics (GHOD)** mechanism. You can find the foundational links and permanent archives below:
 
 * **ResearchGate (Foundational Preprint):** [Gated Higher-Order Dynamics with Guaranteed Return](https://www.researchgate.net/publication/388915855_Gated_Higher-Order_Dynamics_with_Guaranteed_Return_to_the_Manifold_Basin_Metric-Induced_Stability_and_High-Capacity_Associative_Memory)
-* **Zenodo (Permanent Archive):** [DOI: 10.5281/zenodo.14867946](https://zenodo.org/records/14867946)
+* **Zenodo (Permanent Archive):** [[https://zenodo.org/records/14867946](https://zenodo.org/records/18792800))
 * **ResearchGate (V5 - Stability Paper):** [Metric-Induced Stability Beyond Spectral Criteria]([https://www.researchgate.net/publication/403497109_Metric-Induced_Stability_Beyond_Spectral_Criteria_in_Gated_Higher-Order_Dynamical_Systems](https://www.researchgate.net/publication/403742861_Metric-Induced_Stability_Beyond_Spectral_Criteria_in_Gated_Higher-Order_Dynamical_Systems))
 
 ### Key Features

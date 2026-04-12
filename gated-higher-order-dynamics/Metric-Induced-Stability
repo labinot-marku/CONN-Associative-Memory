@@ -1,16 +1,1 @@
-# Metric-Induced Stability (GHOD v5)
 
-This folder contains the official implementation for the preprint: 
-**"Metric-Induced Stability Beyond Spectral Criteria in Gated Higher-Order Dynamical Systems"** DOI: [PENDING - Paste your new DOI here once you have it]
-
-### Overview
-This code validates the **Metric-Hypocoercivity (Theorem HG)** and the **Confinement Radius (Lemma CR)**. It demonstrates how a cubic "Gated Governor" provides absolute stability even in regimes where linear spectral criteria (eigenvalues) predict divergence.
-
-### Key Results
-* **Graceful Degradation:** Stable retrieval at $M=30$ patterns in an $N=100$ network (Double the Hopfield limit).
-* **Deterministic Stability:** Empirical verification of the $1.00$ overlap "Lock-in" at $45\%$ corruption.
-* **Signal Bounding:** Proof-of-concept for the "Green Line" stability seen in SOTA attention-residual architectures (Kimi/DeepSeek).
-
-### Usage
-Run the main script to reproduce Figure A (Validation Plot):
-`python ghod_v4_official.py`

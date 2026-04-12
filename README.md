@@ -30,7 +30,7 @@ The GHOD framework provides a rigorous mathematical theory of stability in syste
 
 **Complete merged preprint (April 2026) — current canonical version:**
 > Marku, L. (2026). *Metric-Induced Stability Beyond Spectral Criteria in Gated Higher-Order Dynamical Systems.*
-> ResearchGate. [DOI: 10.13140/RG.2.2.28366.63048](https://doi.org/10.13140/RG.2.2.28366.63048)
+> ResearchGate. [DOI: 10.13140/RG.2.2.15913.15209](https://doi.org/10.13140/RG.2.2.15913.15209)
 
 Contains: Theorem 1 (Metric-Nonlinear Stabilisation), Theorem HG (Metric-Hypocoercivity), Theorem H-LSI (Log-Sobolev upgrade), Theorem S (Spectral Resolution), Lemma CR (explicit confinement radius R*), Proposition SC (structural conditions for Assumption A5), four corrected hypocoercivity errors, and engagement with Goto et al. 2025 (arXiv:2512.13859).
 

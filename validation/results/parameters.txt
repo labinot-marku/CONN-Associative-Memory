@@ -1,0 +1,27 @@
+CONN Validation v2 — Experimental Parameters
+==============================================
+
+Parameters:
+  lambda (coherence):     0.5 (annealed linearly from 0)
+  eta_phi (phase LR):     0.02
+  eta_A (amplitude LR):   0.03
+  beta (amplitude reg):   1.0
+  Integration steps:      400
+  Noise level:            30% bit-flip
+  Jitter std:             0.5 radians (Gaussian)
+  Hopfield max steps:     200 (synchronous sign updates)
+
+Capacity threshold:       80% mean recall
+Overlap metric:           Quantize to nearest {0, pi}, fraction correct
+
+Trial counts:
+  N=32:   50 trials
+  N=64:   60 trials
+  N=128:  80 trials
+  N=256:  30 trials
+  N=512:  30 trials
+  N=1024: 30 trials
+  N=2048: 30 trials
+
+Noise robustness: N=64, M=6, 40 trials
+Ablation:         N=64, M=10, 40 trials

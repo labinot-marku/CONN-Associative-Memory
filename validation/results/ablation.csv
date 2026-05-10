@@ -1,0 +1,6 @@
+condition,mean_recall,std_recall
+Full CONN (annealed lambda=0.5),83.2,10.5
+No coherence (lambda=0),80.6,11.4
+No amplitude dynamics,82.9,11.2
+Bare coupling (lambda=0 no amp),80.6,11.4
+Hopfield (discrete sign),82.1,15.9

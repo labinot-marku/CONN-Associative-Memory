@@ -9,16 +9,17 @@ Pairwise phase-difference coupling on a circular manifold preserves family-membe
 | System | Discrimination | Exact Recall | MI (bits) |
 |--------|---------------|-------------|-----------|
 | Phase-coupled (sin) | 92.5% | 74.7% | 1.764 |
+| Modern Hopfield (β=1) | 92.9% | — | — |
 | Continuous Hopfield (tanh) | 25.8% | 87.3% | 0.074 |
 | Binary Hopfield (sign) | 25.8% | 87.7% | 0.049 |
 
-The effect survives: component ablation (amplitude, coherence prior — neither matters), similarity sweep (70%–95%), computational budget control (10 Hopfield attempts), matched noise/evaluation, continuous Hopfield baseline, phase system decomposition (sin ≈ linear ≈ cos ≫ tanh-on-circle ≈ binary), and sparse connectivity (100% at N=1024 with 25% connectivity).
+Modern Hopfield matches phase coupling numerically but 99–100% of its outputs are identical to hard nearest-neighbor lookup (softmax saturation at N=80). Pairwise phase coupling achieves equivalent discrimination through genuine oscillatory convergence on the compressed Hebbian matrix.
 
 ## Mechanism
 
 The critical ingredient is **pairwise phase-difference coupling**: any function of (φ_j − φ_i) discriminates, while any global field-based coupling f(Σ_j W_ij x_j) does not. The coupling function is secondary (sin ≈ linear ≈ cos); the coupling *structure* (pairwise difference vs global field) is essential.
 
-## Progressive Ablation (11 Experiments)
+## Progressive Ablation (12 Experiments)
 
 | # | Experiment | Question | Result |
 |---|-----------|----------|--------|
@@ -33,6 +34,7 @@ The critical ingredient is **pairwise phase-difference coupling**: any function 
 | 9 | Load robustness | Higher α? | Robust to α=0.65 |
 | 10 | Discrimination vs recall | Different objectives? | Hopfield wins bits, phase wins identity |
 | 11 | Sparse connectivity | 25% connectivity at N=1024? | 100% vs 25% (exact Bernoulli) |
+| 12 | Modern Hopfield baseline | Does modern Hopfield close the gap? | Matches numerically but = NN lookup |
 
 ## Requirements
 
@@ -56,31 +58,33 @@ python conn_final_validation.py        # Experiments 7-10: MI, scaling, capacity
 
 # Sparse scaling (N=1024, ~25 minutes)
 python conn_sparse_validation.py       # Experiment 11: 25% sparse connectivity
+
+# Modern Hopfield baseline (~1 minute)
+python conn_modern_hopfield.py         # Experiment 12: Modern Hopfield + NN diagnostic
 ```
 
 All results have been independently reproduced in Google Colab with identical numbers across multiple runs.
 
 ## Manuscript
 
-- `CONN_similarity_manuscript.pdf` — Working manuscript (11 pages, 11 experiments)
-- `generate_similarity_manuscript.js` — Manuscript generator (requires Node.js + docx package)
+- `CONN_similarity_manuscript.pdf` — Working manuscript (14 pages, 12 experiments)
 
 ## Limitations
 
 - All families use prototype-flip generation; other correlation structures untested
 - Fixed family structure (3×4) across scaling tests; simultaneous N/family scaling needed
-- Modern Hopfield variants (Krotov & Hopfield 2016, Ramsauer et al. 2020) not tested
+- Modern Hopfield degenerates to NN lookup at N=80; soft-retrieval regime at larger N untested
 - No formal mathematical proof of why pairwise coupling preserves identity
 - Biological claims are speculative
 
 ## Multi-AI Collaboration
 
 This work was developed through adversarial multi-AI review:
-- **Claude (Anthropic)**: Primary computational collaborator, code implementation
+- **Claude (Anthropic)**: Primary computational collaborator; two independent instances designed experiments 1–10 and experiment 12 respectively
 - **ChatGPT (OpenAI)**: Primary critical reviewer, identified confounds and requested controls
 - **Gemini (Google)**: Code review, identified sparse implementation bug
-- **Copilot (Microsoft)**: Generated scaling implementations (with bugs found by Gemini)
-- **Grok (xAI)**: Independent assessment
+- **Copilot (Microsoft)**: Generated scaling implementations (with bugs found by Gemini); detailed manuscript feedback
+- **Grok (xAI)**: Independent assessment and hardware implementation analysis
 
 The OMA architecture hypothesis was killed by ablation prompted by ChatGPT. The similarity-discrimination finding survived all critics.
 

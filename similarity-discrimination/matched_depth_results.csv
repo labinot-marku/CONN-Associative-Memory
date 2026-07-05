@@ -1,0 +1,7 @@
+condition,label,discrimination,mi_mm_bits,bits_moved_pct
+cue_nn,Raw cue NN (k=0),92.92,1.6229,0.0
+phase_short,"Phase short (η=0.005, s=150) [published]",92.92,1.6229,0.224
+field_short,"Field short (η=0.001, s=150, β=0.5)",92.92,1.6229,0.0
+phase_long,"Phase long  (η=0.005, s=600)",38.33,0.2414,26.099
+field_long,"Field long  (η=0.005, s=600, β=1.0)",25.0,0.0313,50.948
+hopfield,Hopfield converged,26.67,0.0387,0.0

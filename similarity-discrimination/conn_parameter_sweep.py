@@ -60,20 +60,21 @@ def classify(out, patterns, fam_map, f):
     return best
 
 def mi_miller_madow(targets, outputs, n_classes):
-    n = len(targets)
+    """
+    Miller-Madow bias-corrected MI in bits (corrected in V5).
+    Plug-in MI is biased upward; the Miller-Madow correction is applied to
+    each entropy term: MI_MM = MI_plugin + [(m_X-1) + (m_Y-1) - (m_XY-1)] / (2 n ln 2),
+    where m = number of non-empty cells. Clipped to [0, log2(n_classes)].
+    """
+    t = np.asarray(targets, int); o = np.asarray(outputs, int); n = len(t)
     if n == 0: return 0.0
-    joint = np.zeros((n_classes, n_classes))
-    for t, o in zip(targets, outputs):
-        joint[t, o] += 1
-    joint /= (n + 1e-12)
-    pt = joint.sum(1); po = joint.sum(0)
-    mi = 0.0
-    for t in range(n_classes):
-        for o in range(n_classes):
-            if joint[t,o]>1e-12 and pt[t]>1e-12 and po[o]>1e-12:
-                mi += joint[t,o]*np.log2(joint[t,o]/(pt[t]*po[o]))
-    m = np.sum(joint > 0)
-    return max(mi + (m-1)/(2*n), 0.0)
+    J = np.zeros((n_classes, n_classes))
+    for a, b in zip(t, o): J[a, b] += 1
+    def H(c):
+        p = c[c > 0] / c.sum(); return -(p * np.log2(p)).sum(), int((c > 0).sum())
+    hx, mx = H(J.sum(1)); hy, my = H(J.sum(0)); hxy, mxy = H(J.ravel())
+    mi = (hx + hy - hxy) + ((mx - 1) + (my - 1) - (mxy - 1)) / (2 * n * np.log(2))
+    return float(np.clip(mi, 0.0, np.log2(n_classes)))
 
 def run_phase(J, phi0, steps, eta):
     phi = phi0.copy()
@@ -172,7 +173,7 @@ for ei, eta in enumerate(ETA_VALS):
     print()
 
 # Save CSV
-with open('/home/claude/parameter_sweep_results.csv','w',newline='') as f:
+with open('parameter_sweep_results.csv','w',newline='') as f:
     w = csv.DictWriter(f, fieldnames=['eta','n_steps','discrimination',
                                        'mi_mm_bits','bits_moved_pct'])
     w.writeheader(); w.writerows(sweep_rows)
@@ -316,7 +317,7 @@ for key in ['cue_nn','phase_short','field_short','phase_long','field_long']:
     print(f"    {labels[key]:<42}: Δ={np.mean(diff)*100:+.1f}pp  p={p:.4f} {sig}")
 
 # Save CSV
-with open('/home/claude/matched_depth_results.csv','w',newline='') as f:
+with open('matched_depth_results.csv','w',newline='') as f:
     w = csv.DictWriter(f, fieldnames=['condition','label','discrimination',
                                        'mi_mm_bits','bits_moved_pct'])
     w.writeheader(); w.writerows(md_rows)

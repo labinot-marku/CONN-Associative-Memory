@@ -104,19 +104,20 @@ def mi_naive(targets, outputs, n_classes):
 
 def mi_miller_madow(targets, outputs, n_classes):
     """
-    Miller-Madow bias-corrected MI.
-    MI_MM = MI_naive + (m - 1) / (2 * N)
-    where m = number of non-empty cells in joint distribution.
+    Miller-Madow bias-corrected MI in bits (corrected in V5).
+    Plug-in MI is biased upward; the Miller-Madow correction is applied to
+    each entropy term: MI_MM = MI_plugin + [(m_X-1) + (m_Y-1) - (m_XY-1)] / (2 n ln 2),
+    where m = number of non-empty cells. Clipped to [0, log2(n_classes)].
     """
-    n = len(targets)
-    mi_n = mi_naive(targets, outputs, n_classes)
-    # Count non-empty joint cells
-    joint_counts = np.zeros((n_classes, n_classes), dtype=int)
-    for t, o in zip(targets, outputs):
-        joint_counts[t, o] += 1
-    m = np.sum(joint_counts > 0)
-    correction = (m - 1) / (2 * n)
-    return max(mi_n + correction, 0.0)
+    t = np.asarray(targets, int); o = np.asarray(outputs, int); n = len(t)
+    if n == 0: return 0.0
+    J = np.zeros((n_classes, n_classes))
+    for a, b in zip(t, o): J[a, b] += 1
+    def H(c):
+        p = c[c > 0] / c.sum(); return -(p * np.log2(p)).sum(), int((c > 0).sum())
+    hx, mx = H(J.sum(1)); hy, my = H(J.sum(0)); hxy, mxy = H(J.ravel())
+    mi = (hx + hy - hxy) + ((mx - 1) + (my - 1) - (mxy - 1)) / (2 * n * np.log(2))
+    return float(np.clip(mi, 0.0, np.log2(n_classes)))
 
 def mi_bootstrap_ci(targets, outputs, n_classes, B=2000, alpha=0.05, seed=0):
     """
@@ -333,7 +334,7 @@ if __name__ == '__main__':
   Binary Hopfield MI:     {bi_mm:.3f} bits [{bi_lo:.3f}, {bi_hi:.3f}]
 
   MI estimator: Miller-Madow bias correction
-    MI_MM = MI_naive + (m - 1) / (2N)
+    MI_MM = MI_plugin + [(m_X-1)+(m_Y-1)-(m_XY-1)]/(2 n ln 2)  (V5 corrected)
     where m = number of non-empty cells in the joint distribution
   Bootstrap: B={B_BOOTSTRAP} resamples, 95% CI (2.5th-97.5th percentile)
   Seeds: {N_SEEDS}, RNG: numpy.default_rng, base seed {RNG_BASE}

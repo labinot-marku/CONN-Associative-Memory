@@ -155,6 +155,7 @@ def run_full_test(N, n_families, members, similarity, n_unrelated, noise, seed):
         'phase_mi': mi['phase'],
         'cont_mi': mi['cont'],
         'bin_mi': mi['binary'],
+        'idx': {k: (results[k]['target_idx'], results[k]['output_idx']) for k in results},  # V5: for pooled MI
     }
 
 

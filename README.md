@@ -125,7 +125,7 @@ CONN also exhibits **up to 8× lower recall variance** near capacity at large N.
 ### Energy Function (v2)
 
 ```
-E(φ, A) = −½ Σᵢⱼ Jᵢⱼ Aᵢ Aⱼ cos(φᵢ − φⱼ) + λ Σⱼ Aⱼ² sin²(φⱼ) + (β/2) Σⱼ (Aⱼ − 1)²
+E(φ, A) = −½ Σᵢⱼ Jᵢⱼ Aᵢ Aⱼ cos(φᵢ − φⱼ) + λ Σⱼ Aⱼ² sin²(φⱼ) + β Σⱼ (Aⱼ − 1)²
 ```
 
 ### Validation Scripts
@@ -174,6 +174,19 @@ python CONN_N1024_N2048_VALIDATION.py
 
 ---
 
+## 🧭 Phase-Variant Experiment (Geometry/Topology preprint, v2)
+
+Code and results for Section 5.1 of *Geometry, Topology, and Universality Boundaries in Associative Memory Networks*, Version 2 (November 2026). The experiment tests whether CONN can store globally phase-shifted variants of its patterns. It uses the CONN v2 dynamics and noise model unchanged and is seeded and deterministic (runtime about one minute).
+
+```bash
+cd phase-variant
+python phase_variant_experiment.py
+```
+
+The phase-variant results reported in Version 1 of that preprint could not be traced to code and are withdrawn. See `phase-variant/README.md` for details.
+
+---
+
 ## 📁 Repository Structure
 
 ```
@@ -196,6 +209,11 @@ CONN-Associative-Memory/
 │   └── CONN_Figure3_N2048_detail.png
 ├── preprint/
 │   └── CONN_preprint_v2_final.pdf
+├── phase-variant/                        # Geometry/Topology preprint v2, Section 5.1
+│   ├── phase_variant_experiment.py
+│   ├── phase_variant_results.csv
+│   ├── phase_variant_per_k.csv
+│   └── README.md
 ├── gated-higher-order-dynamics/           # GHOD (separate project)
 │   ├── gated_dynamics.py
 │   ├── supplementary/
@@ -263,4 +281,4 @@ Department of Neurosurgery, KRH Klinikum Nordstadt Hannover, Germany
 
 MIT License — see [LICENSE](LICENSE) for details.
 
-*Last updated: May 2026*
+*Last updated: November 2026*
